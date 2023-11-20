@@ -7,6 +7,7 @@ import Login from "../pages/Login";
 import Admin from "../pages/Admin";
 import NotFound from "../pages/NotFound";
 import SignUp from "../pages/SignUp";
+import Dashboard from "../pages/Dashboard";
 
 const Body = () => {
   return (
@@ -18,6 +19,7 @@ const Body = () => {
       <Route path="/login" element={<Login />}></Route>
       <Route path="/signup" element={<SignUp />}></Route>
       <Route path="/admin" element={<Admin />}></Route>
+      <Route path="/dashboard" element={<Dashboard />}></Route>
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
