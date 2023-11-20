@@ -14,11 +14,17 @@ function NavBar() {
   const signUp = () => {
     navigate("/signup", { replace: true });
   };
-  if (cookies.get("user") !== null && cookies.get("user") !== undefined) {
+  if (
+    cookies.get("user") !== null &&
+    cookies.get("user") !== undefined
+  ) {
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <a className="navbar-brand" href="/">
           Home
+        </a>
+        <a className="navbar-brand" href="/dashboard">
+          Dashboard
         </a>
         <a className="navbar-brand" href="/answer">
           Answer

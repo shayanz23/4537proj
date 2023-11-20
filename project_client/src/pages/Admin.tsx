@@ -5,6 +5,7 @@ import Cookies from "universal-cookie";
 
 export default function Dashboard() {
   const cookies = new Cookies();
+  console.log(cookies.get("user"));
   if (
     cookies.get("user") !== null && cookies.get("user") !== undefined && !cookies.get("user").admin
   ) {
