@@ -1,22 +1,36 @@
 import { useState } from "react"
-import { collection, addDoc } from "firebase/firestore"; 
+import { collection, addDoc, getDocs } from "firebase/firestore"; 
 import db from ".././components/firebaseConfig.tsx";
-
-
+import { useNavigate } from 'react-router-dom'; 
 
 function SignUp() {
   const [ username, setUsername ] = useState<string>('')
   const [ password, setPassword ] = useState<string>('')
+  const navigate = useNavigate();
 
   const SignUpEventHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-        const docRef = await addDoc(collection(db, "user"), {
-          admin: false,
-          username,
-          password
+        let found = false;
+        const check = await getDocs(collection(db, "user"));
+        check.docs.forEach((doc) => {
+          const data = doc.data();
+          if (data.username === username) {
+            found = true;
+          }
         });
-        console.log("Document written with ID: ", docRef.id);
+        if (found === false) {
+          const docRef = await addDoc(collection(db, "user"), {
+            admin: false,
+            username,
+            password
+          });
+          console.log("Document written with ID: ", docRef.id);
+          
+          navigate("/login", {replace: true});
+        } else {
+          console.log("Username", username, "taken");
+        }
       } catch (e) {
         console.error("Error adding document: ", e);
       }
