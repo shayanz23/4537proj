@@ -1,47 +1,58 @@
-import { useState } from "react"
-import { collection, getDocs } from "firebase/firestore"; 
+import { useState } from "react";
+import { collection, getDocs } from "firebase/firestore";
 import db from ".././components/firebaseConfig.tsx";
-import { useNavigate } from "react-router-dom";
+import { Navigate, redirect, useNavigate } from "react-router-dom";
+import Cookies from "universal-cookie";
 
 function Login() {
-    const [ username, setUsername ] = useState<string>('')
-    const [ password, setPassword ] = useState<string>('')
-    const navigate = useNavigate();
-  
-    const LoginInEventHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      let found = false;
-      try {
-          const docRef = await getDocs(collection(db, "user"));
-          docRef.docs.forEach((doc) => {
-            const data = doc.data();
-            if (data.username === username && data.password === password) {
-              found = true;
-              console.log("Document read with ID: ", doc.id);
-              if (data.admin === true) {
-                navigate("/admin");
-              } else {
-                navigate("/ask");
-              }
-            }
-          });
-        } catch (e) {
-          console.error("Error getting document: ", e);
-        }
-        console.log("Login not found");
-    }
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [response, setResponse] = useState<string>("");
+  const cookies = new Cookies();
+  const navigate = useNavigate();
 
+  const LoginInEventHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    let found = false;
+    try {
+      const docRef = await getDocs(collection(db, "users"));
+      docRef.docs.forEach((doc) => {
+        const data = doc.data();
+        if (data.username === username && data.password === password) {
+          found = true;
+          console.log("Document read with ID: ", doc.id);
+          cookies.set("user", doc.data(), { path: "/" });
+          if (data.admin === true) {
+            navigate("/admin");
+          } else {
+            navigate("/dashboard");
+          }
+        }
+      });
+    } catch (e) {
+      console.error("Error getting document: ", e);
+    }
+    setResponse("Username or password is incorrect!");
+  };
+
+  if (
+    (cookies.get("user") !== null && cookies.get("user") !== undefined && !cookies.get("user").admin)
+  ) {
+    return <Navigate to="/dashboard" />;
+  } else if (cookies.get("user") !== null && cookies.get("user") !== undefined && cookies.get("user").admin) {
+    return <Navigate to="/admin" />;
+  } else {
   return (
     <div className="container">
       <div className="login">
         <h1>Log In</h1>
-        <form onSubmit={ LoginInEventHandler }>
+        <form onSubmit={LoginInEventHandler}>
           <input
             type="text"
             name="username"
             placeholder="Username"
             required={true}
-            value={ username }
+            value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
           <p>{"\n"}</p>
@@ -50,7 +61,7 @@ function Login() {
             name="password"
             placeholder="Password"
             required={true}
-            value={ password }
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           <p>{"\n"}</p>
@@ -58,9 +69,11 @@ function Login() {
             Log In
           </button>
         </form>
+        <p>{response}</p>
       </div>
     </div>
   );
+  }
 }
 
 export default Login;
