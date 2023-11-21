@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
-import db from ".././components/firebaseConfig.tsx";
+import { db } from ".././components/firebaseConfig.tsx";
 import { Navigate, useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 

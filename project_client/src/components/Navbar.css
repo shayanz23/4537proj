@@ -1,0 +1,12 @@
+.navbar {
+    background-color: rgb(205, 236, 255);
+  }
+
+  .navbar-brand {
+    cursor: pointer;
+  }
+
+  .end-item {
+    margin-left: auto;
+    display:flex;
+  }
