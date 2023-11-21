@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
 import db from ".././components/firebaseConfig.tsx";
-import { Navigate, redirect, useNavigate } from "react-router-dom";
-import { UserContext } from "../Contexts.tsx";
-import { useContext } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 
 function SignUp() {
@@ -12,7 +10,6 @@ function SignUp() {
   const [confirmedPassword, setConfirmedPassword] = useState<string>("");
   const [response, setResponse] = useState<string>("");
   const navigate = useNavigate();
-  const user = useContext(UserContext);
   const cookies = new Cookies();
 
   const signUp = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -32,7 +29,7 @@ function SignUp() {
         setResponse("Passwords don't match!");
         return;
       }
-      const docRef = await addDoc(collection(db, "users"), {
+      await addDoc(collection(db, "users"), {
         admin: false,
         username,
         password,
@@ -45,13 +42,11 @@ function SignUp() {
   };
   console.log(cookies.get("user"));
   if (
-    user ||
     (cookies.get("user") !== null && cookies.get("user") !== undefined && !cookies.get("user").admin)
   ) {
     return <Navigate to="/dashboard" />;
   } else {
     return (
-      <UserContext.Provider value={user}>
         <div className="container">
           <div className="sign-up">
             <h1>Sign Up</h1>
@@ -93,7 +88,6 @@ function SignUp() {
             </form>
           </div>
         </div>
-      </UserContext.Provider>
     );
   }
 }

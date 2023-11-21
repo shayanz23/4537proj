@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import db from ".././components/firebaseConfig.tsx";
-import { Navigate, redirect, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 
 function Login() {
@@ -13,13 +13,11 @@ function Login() {
 
   const LoginInEventHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    let found = false;
     try {
       const docRef = await getDocs(collection(db, "users"));
       docRef.docs.forEach((doc) => {
         const data = doc.data();
         if (data.username === username && data.password === password) {
-          found = true;
           console.log("Document read with ID: ", doc.id);
           cookies.set("user", doc.data(), { path: "/" });
           if (data.admin === true) {

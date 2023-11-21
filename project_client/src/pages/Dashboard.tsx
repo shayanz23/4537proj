@@ -1,7 +1,6 @@
 import { Navigate } from "react-router-dom";
 import Cookies from "universal-cookie";
-import { UserContext } from "../Contexts.tsx";
-import { useContext } from "react";
+
 
 
 export default function Dashboard() {

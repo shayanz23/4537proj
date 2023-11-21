@@ -3,15 +3,12 @@ import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.bundle.js";
-import { collection, getFirestore, getDocs } from "firebase/firestore";
-import { createContext } from 'react';
-import Cookies from 'universal-cookie';
+import { collection, getFirestore } from "firebase/firestore";
 // Import the functions you need from the SDKs you need
 
 import { initializeApp } from "firebase/app";
 import { BrowserRouter } from "react-router-dom";
 
-const UserContext = createContext(null);
 
 // TODO: Add SDKs for Firebase products that you want to use
 

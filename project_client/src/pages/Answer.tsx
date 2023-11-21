@@ -1,5 +1,5 @@
 import Cookies from "universal-cookie";
-import { Navigate, redirect, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 function Answer() {
   const cookies = new Cookies();

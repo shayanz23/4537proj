@@ -1,40 +1,51 @@
 import Cookies from "universal-cookie";
-import { Navigate, redirect, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useState } from "react";
 
 function Ask() {
-  const [ question, setQuestion ] = useState<string>('');
-  const [ answer, setAnswer ] = useState<string>('');
+  const [question, setQuestion] = useState<string>("");
+  const [answer, setAnswer] = useState<string>("");
   const QuestionEventHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+    e.preventDefault();
     const response = await fetch(
-        "https://api-inference.huggingface.co/models/gpt2",
-        {
-            headers: { Authorization: `Bearer ${"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"}` },
-            method: "POST",
-            body: JSON.stringify(question),
-        }
+      "https://api-inference.huggingface.co/models/gpt2",
+      {
+        headers: {
+          Authorization: `Bearer ${"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"}`,
+        },
+        method: "POST",
+        body: JSON.stringify(question),
+      }
     );
     const result = await response.json();
-    setAnswer(result[0].generated_text.trim().substring(question.length, result[0].generated_text.length));
-  }
-  
+    setAnswer(
+      result[0].generated_text
+        .trim()
+        .substring(question.length, result[0].generated_text.length)
+    );
+  };
+
   const cookies = new Cookies();
-  if (
-    cookies.get("user") !== null && cookies.get("user") !== undefined
-  ) {
+  if (cookies.get("user") !== null && cookies.get("user") !== undefined) {
     return (
       <div className="container">
         <h2>Which answer is by AI?</h2>
-      <form onSubmit={ QuestionEventHandler }>
-        <label htmlFor="question">Question</label>
-        <input type="text" name="question" id="question" placeholder="Question" value={ question } onChange={(e) => setQuestion(e.target.value)} />
-        <p>{"\n"}</p>
-        <button type="submit" className="btn btn-primary btn-block btn-large">
-          Submit Question
-        </button>
-        <p>{"\n"}</p>
-      </form>
+        <form onSubmit={QuestionEventHandler}>
+          <label htmlFor="question">Question</label>
+          <input
+            type="text"
+            name="question"
+            id="question"
+            placeholder="Question"
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+          />
+          <p>{"\n"}</p>
+          <button type="submit" className="btn btn-primary btn-block btn-large">
+            Submit Question
+          </button>
+          <p>{"\n"}</p>
+        </form>
         <label htmlFor="answer_area_1">Answer 1</label>
         <label htmlFor="answer_area_2">Answer 2</label>
         <p>{"\n"}</p>
@@ -44,8 +55,8 @@ function Ask() {
           cols={30}
           rows={10}
           title="Answer 1"
-        value={answer}
-        readOnly
+          value={answer}
+          readOnly
         ></textarea>
         <textarea
           name="text"
@@ -53,8 +64,8 @@ function Ask() {
           cols={30}
           rows={10}
           title="Answer 2"
-        value={answer}
-        readOnly
+          value={answer}
+          readOnly
         ></textarea>
         <p>{"\n"}</p>
         <label htmlFor="answer_1">Answer 1</label>
@@ -70,7 +81,6 @@ function Ask() {
   } else {
     return <Navigate to="/" />;
   }
-
 }
 
 export default Ask;
