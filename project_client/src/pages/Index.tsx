@@ -1,6 +1,8 @@
+import "./container.css";
+
 function Index() {
     return (
-        <div>
+        <div className="container">
         <h1>Index</h1>
         </div>
     );

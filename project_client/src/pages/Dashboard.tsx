@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
 import Cookies from "universal-cookie";
-
+import "./container.css";
 
 
 export default function Dashboard() {
@@ -15,7 +15,7 @@ export default function Dashboard() {
     (cookies.get("user") !== null && cookies.get("user") !== undefined)
   ) {
     return (
-      <div>
+      <div className="container">
         <h1>Dashboard</h1>
       </div>
     );

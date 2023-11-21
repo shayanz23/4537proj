@@ -1,6 +1,7 @@
 import Cookies from "universal-cookie";
 import { Navigate } from "react-router-dom";
 import { useState } from "react";
+import "./container.css";
 
 function Ask() {
   const [question, setQuestion] = useState<string>("");

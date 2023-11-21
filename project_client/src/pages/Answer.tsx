@@ -1,5 +1,6 @@
 import Cookies from "universal-cookie";
 import { Navigate } from "react-router-dom";
+import "./container.css";
 
 function Answer() {
   const cookies = new Cookies();
