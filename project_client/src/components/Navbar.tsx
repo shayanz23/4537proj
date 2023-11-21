@@ -17,7 +17,7 @@ function NavBar() {
   };
   if (cookies.get("user") !== null && cookies.get("user") !== undefined) {
     return (
-      <nav className="navbar navbar-expand-lg navbar-light">
+      <nav className="navbar navbar-expand-lg navbar-dark">
         <a className="navbar-brand" href="/" style={{ marginLeft: "10px" }}>
           Home
         </a>
