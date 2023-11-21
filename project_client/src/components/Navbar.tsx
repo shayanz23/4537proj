@@ -37,7 +37,7 @@ function NavBar() {
     );
   } else {
     return (
-      <nav className="navbar navbar-expand-lg navbar-light">
+      <nav className="navbar navbar-expand-lg navbar-dark">
         <a className="navbar-brand" href="/" style={{ marginLeft: "10px" }}>
           Home
         </a>
