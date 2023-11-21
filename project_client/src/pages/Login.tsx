@@ -33,7 +33,6 @@ function Login() {
     }
     setResponse("Username or password is incorrect!");
   };
-
   if (
     (cookies.get("user") !== null && cookies.get("user") !== undefined && !cookies.get("user").admin)
   ) {
