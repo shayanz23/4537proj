@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
-import "./Navbar.css";
 
 function NavBar() {
   const cookies = new Cookies();

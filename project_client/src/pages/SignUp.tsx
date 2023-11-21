@@ -48,7 +48,7 @@ function SignUp() {
     return <Navigate to="/dashboard" />;
   } else {
     return (
-        <div className="container">
+        <div className="container form-container">
           <div className="sign-up">
             <h1>Sign Up</h1>
             <form onSubmit={signUp}>

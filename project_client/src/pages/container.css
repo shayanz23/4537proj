@@ -1,5 +1,11 @@
-
 .container {
-    height: 100%;
-    /* equal to footer height */
-  }
+  height: 100%;
+  /* equal to footer height */
+}
+
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}

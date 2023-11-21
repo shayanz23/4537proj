@@ -42,7 +42,7 @@ function Login() {
     return <Navigate to="/admin" />;
   } else {
   return (
-    <div className="container">
+    <div className="container form-container">
       <div className="login">
         <h1>Log In</h1>
         <form onSubmit={LoginInEventHandler}>
