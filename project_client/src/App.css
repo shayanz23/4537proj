@@ -1,5 +1,5 @@
 .main-div {
-  background-color: #f5f5f5f6;
+  background-color: #f7f7f7;
   min-height: 100vh ;
   width: 100vw;
   height: fit-content;
@@ -15,6 +15,17 @@
 }
 
 .navbar-brand {
+  cursor: pointer;
+}
+
+.nav-item {
+  cursor: pointer;
+max-height: 35px !important;
+  font-size: 1.4em; 
+  margin-right: 10px;
+}
+
+.dropdown-item {
   cursor: pointer;
 }
 

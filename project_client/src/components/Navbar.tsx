@@ -29,8 +29,23 @@ function NavBar() {
         <a className="navbar-brand" href="/ask">
           Ask
         </a>
-        <div className="navbar-brand end-item" onClick={logout}>
-          Log Out
+        
+        <div className="nav-item dropdown end-item">
+          <p
+            className=" dropdown-toggle"
+            id="dropdownMenuButton1"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            {cookies.get("user").username}
+          </p>
+          <ul className="dropdown-menu" >
+            <li>
+              <a className="dropdown-item" onClick={logout}>
+                Logout
+              </a>
+            </li>
+          </ul>
         </div>
       </nav>
     );

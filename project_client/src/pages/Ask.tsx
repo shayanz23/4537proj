@@ -53,8 +53,9 @@ function Ask() {
         <textarea
           name="text"
           id="answer_area_1"
+          className="form-control"
           cols={30}
-          rows={10}
+          rows={15}
           title="Answer 1"
           value={answer}
           readOnly
@@ -62,8 +63,9 @@ function Ask() {
         <textarea
           name="text"
           id="answer_area_2"
+          className="form-control"
           cols={30}
-          rows={10}
+          rows={15}
           title="Answer 2"
           value={answer}
           readOnly
