@@ -24,17 +24,25 @@ export default function Dashboard() {
   ) {
     return (
       <div className="container">
-        <h1 style={{width: "100%", marginTop: "10px"}}>Admin Dashboard</h1>
-        <table style={{width: "100%", marginTop: "10px"}}>
-          <tr>
-            <th>User email</th>
-            <th>Admin?</th>
-            <th>Edit</th>
-            <th>Delete</th>
-          </tr>
-          <UserTableRow UserId="1" UserEmail="test@test.ca" UserAdmin={true} />
+        <h1 style={{ width: "100%", marginTop: "10px" }}>Admin Dashboard</h1>
+        <table style={{ width: "100%", marginTop: "10px" }}>
+          <thead>
+            <tr>
+              <th>User email</th>
+              <th>Admin?</th>
+              <th>Edit</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            <UserTableRow
+              userId="1"
+              userEmail="test@test.ca"
+              userAdmin={true}
+            />
+          </tbody>
         </table>
-        <button className="btn btn-primary btn-block btn-large" >
+        <button className="btn btn-primary btn-block btn-large">
           Add User
         </button>
       </div>

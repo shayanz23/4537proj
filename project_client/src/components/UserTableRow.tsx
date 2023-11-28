@@ -1,16 +1,29 @@
-export default function UserTableRow(props: { UserId: string; UserEmail: string; UserAdmin: boolean; }) {
-  const Id = props.UserId;
-  const Email = props.UserEmail;
-  const Admin = props.UserAdmin;
+import EditUserPopup from "./EditUserPopup";
+
+export default function UserTableRow(props: {
+  userId: string;
+  userEmail: string;
+  userAdmin: boolean;
+}) {
+  const id = props.userId;
+  const email = props.userEmail;
+  const admin = props.userAdmin;
+  const adminString = admin ? "true" : "false";
+
   return (
-    <tr id={Id + "-row"}>
-      <td id={Id + "-email"}>{Email}</td>
-      <td id={Id + "-admin"}>{Admin.valueOf()}</td>
+    <tr id={id + "-row"}>
+      <td id={id + "-email"}>{email}</td>
+      <td id={id + "-admin"}>{adminString}</td>
       <td>
-        <button id={Id + "-edit"} className="btn btn-primary btn-block btn-large">Edit</button>
+        <EditUserPopup userId={id} userEmail={email} userAdmin={admin} />
       </td>
       <td>
-        <button id={Id + "-delete"} className="btn btn-primary btn-block btn-large">Delete</button>
+        <button
+          id={id + "-delete"}
+          className="btn btn-primary btn-block btn-large"
+        >
+          Delete
+        </button>
       </td>
     </tr>
   );
