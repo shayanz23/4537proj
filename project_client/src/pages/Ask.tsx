@@ -32,7 +32,6 @@ function Ask() {
       <div className="container">
         <h2>Which answer is by AI?</h2>
         <form onSubmit={QuestionEventHandler}>
-          <label htmlFor="question">Question</label>
           <input
             type="text"
             name="question"
@@ -47,38 +46,17 @@ function Ask() {
           </button>
           <p>{"\n"}</p>
         </form>
-        <label htmlFor="answer_area_1">Answer 1</label>
-        <label htmlFor="answer_area_2">Answer 2</label>
         <p>{"\n"}</p>
         <textarea
           name="text"
           id="answer_area_1"
           className="form-control"
           cols={30}
-          rows={15}
+          rows={25}
           title="Answer 1"
           value={answer}
           readOnly
         ></textarea>
-        <textarea
-          name="text"
-          id="answer_area_2"
-          className="form-control"
-          cols={30}
-          rows={15}
-          title="Answer 2"
-          value={answer}
-          readOnly
-        ></textarea>
-        <p>{"\n"}</p>
-        <label htmlFor="answer_1">Answer 1</label>
-        <input type="radio" name="answer" id="answer_1" value="1" />
-        <label htmlFor="answer_2">Answer 2</label>
-        <input type="radio" name="answer" id="answer_2" value="2" />
-        <p>{"\n"}</p>
-        <button type="submit" className="btn btn-primary btn-block btn-large">
-          Submit Choice
-        </button>
       </div>
     );
   } else {

@@ -1,7 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Index from "../pages/Index";
 import Ask from "../pages/Ask";
-import Answer from "../pages/Answer";
 import Login from "../pages/Login";
 import Admin from "../pages/Admin";
 import NotFound from "../pages/NotFound";
@@ -14,7 +13,6 @@ const Body = () => {
       {/* The Switch decides which component to show based on the current URL.*/}
       <Route path="/" element={<Index />}></Route>
       <Route path="/ask" element={<Ask />}></Route>
-      <Route path="/answer" element={<Answer />}></Route>
       <Route path="/login" element={<Login />}></Route>
       <Route path="/signup" element={<SignUp />}></Route>
       <Route path="/admin" element={<Admin />}></Route>

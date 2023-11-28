@@ -23,9 +23,6 @@ function NavBar() {
         <a className="navbar-brand" href="/dashboard">
           Dashboard
         </a>
-        <a className="navbar-brand" href="/answer">
-          Answer
-        </a>
         <a className="navbar-brand" href="/ask">
           Ask
         </a>
