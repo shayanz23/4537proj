@@ -7,7 +7,9 @@
   grid-template-rows: 55px auto 200px;
 }
 
-
+.ReactModal__Overlay {
+  background-color: #00000056 !important;
+}
 
 .navbar {
   background-color: #d2d2d2;

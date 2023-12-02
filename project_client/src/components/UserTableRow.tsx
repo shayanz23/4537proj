@@ -1,4 +1,4 @@
-import EditUserPopup from "./EditUserPopup";
+import EditUserModal from "./EditUserModal";
 
 export default function UserTableRow(props: {
   userId: string;
@@ -15,7 +15,7 @@ export default function UserTableRow(props: {
       <td id={id + "-email"}>{email}</td>
       <td id={id + "-admin"}>{adminString}</td>
       <td>
-        <EditUserPopup userId={id} userEmail={email} userAdmin={admin} />
+        <EditUserModal userId={id} userEmail={email} userAdmin={admin} />
       </td>
       <td>
         <button
