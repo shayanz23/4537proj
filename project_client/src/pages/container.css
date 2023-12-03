@@ -1,11 +1,51 @@
+/* Rest of your CSS remains unchanged */
+
+/* Style for the container */
 .container {
-  height: 100%;
-  /* equal to footer height */
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative; /* To position the button */
 }
 
-.form-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
+/* Style for the conversation area */
+.conversation {
+  overflow-y: auto;
+  max-height: 300px; /* Adjust this based on your design */
+  padding-bottom: 40px; /* To accommodate space for the button */
+}
+
+/* Style for user messages */
+.message.user {
+  text-align: right;
+  background-color: #DCF8C6;
+  padding: 8px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+/* Style for AI messages */
+.message.ai {
+  text-align: left;
+  background-color: #E0E0E0;
+  padding: 8px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+/* Style for the submit button */
+form {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 10px;
+  background-color: #FFF;
+  border-top: 1px solid #DDD;
+}
+
+input[type="text"],
+button[type="submit"] {
+  width: calc(100% - 20px);
+  margin-right: 10px;
 }
