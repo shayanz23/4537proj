@@ -9,28 +9,29 @@ function Ask() {
   const QuestionEventHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const response = await fetch(
-      "https://api-inference.huggingface.co/models/gpt2",
+      "https://api-inference.huggingface.co/models/facebook/blenderbot-400M-distill",
       {
-        headers: {
-          Authorization: `Bearer ${"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"}`,
-        },
-        method: "POST",
-        body: JSON.stringify(question),
+        headers: { Authorization: "Bearer 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" },
+			method: "POST",
+			body: JSON.stringify(question),
+
       }
     );
     const result = await response.json();
-    setAnswer(
-      result[0].generated_text
-        .trim()
-        .substring(question.length, result[0].generated_text.length)
-    );
+    console.log(result);
+    if (result && result.generated_text) {
+      setAnswer(result.generated_text);
+    } else {
+      setAnswer("No response from the AI.");
+    }
   };
+  
 
   const cookies = new Cookies();
   if (cookies.get("user") !== null && cookies.get("user") !== undefined) {
     return (
       <div className="container">
-        <h2>Which answer is by AI?</h2>
+        <h2>Ask your Question! We will give UNHINGED advice!</h2>
         <form onSubmit={QuestionEventHandler}>
           <input
             type="text"
