@@ -15,7 +15,12 @@
   height: 100%;
   display: grid;
   grid-template-columns: 50% 50%;
-  grid-template-rows: 25% 25% 25% 25%;
+  grid-template-rows: 17% 20% 20% 14% 14% 15%;
+}
+
+#popup-title {
+  grid-column: 1 / span 2;
+  grid-row: 1 / span 1;
 }
 
 #email-input {
@@ -24,9 +29,28 @@
   width: 85%;
 }
 
+#password-input {
+  grid-column: 1 / span 2;
+  grid-row: 3 / span 1;
+  width: 85%;
+}
+
 #submit-button {
   grid-column: 2 / span 1;
-  grid-row: 4 / span 1;
+  grid-row: 6 / span 1;
+  width: 80px;
+  height: 40px;
+}
+
+#error-label {
+  grid-column: 1 / span 2;
+  grid-row: 5 / span 1;
+  color: red;
+}
+
+#cancel-button {
+  grid-column: 1 / span 1;
+  grid-row: 6 / span 1;
   width: 80px;
   height: 40px;
 }
@@ -34,12 +58,12 @@
 #admin-checkbox {
   width: 20px;
   height: 20px;
-  grid-row: 3 / span 1;
+  grid-row: 4 / span 1;
   grid-column: 2 / span 1;
 }
 
 #admin-label {
-  grid-row: 3 / span 1;
+  grid-row: 4 / span 1;
   grid-column: 1 / span 1;
 }
 

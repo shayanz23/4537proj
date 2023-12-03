@@ -5,6 +5,7 @@ import UserTableRow from "../components/UserTableRow";
 import AddUserModal from "../components/AddUserModal";
 import "./container.css";
 import ListUser from "../components/ListUser";
+import "../components/EditUserModal.css"
 
 // const user = useContext(UserContext);
 
@@ -21,11 +22,8 @@ export default function Dashboard() {
       new_array.push(userList[i]);
     }
     const new_user: ListUser = { id: id, email: email, isAdmin: isAdmin };
-    console.log(new_user);
     new_array.push(new_user);
     setUserList(new_array);
-    console.log(userList);
-
   }
 
   function removeUser(id: string) {

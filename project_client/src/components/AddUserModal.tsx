@@ -1,16 +1,18 @@
-import "./AddUserModal.css";
 import Modal from "react-modal";
 import React from "react";
+import { set } from "firebase/database";
+import { checkEmailValidity } from "./Validity";
 
 export default function AddUserModal(props: { addToList: Function }) {
   const [modalIsOpen, setIsOpen] = React.useState(false);
-  const [email, setEmail] = React.useState("");
-  const [pw, setPw] = React.useState("");
-  const [isAdmin, setIsAdmin] = React.useState(false);
+  const [emailField, setEmailField] = React.useState("");
+  const [pwField, setPwField] = React.useState("");
+  const [isAdminField, setIsAdminField] = React.useState(false);
+  const [submitError, setSubmitError] = React.useState("");
   const [demoId, setDemoId] = React.useState(0);
 
   function handleAdminChange() {
-    setIsAdmin(!isAdmin);
+    setIsAdminField(!isAdminField);
   }
 
   function openModal() {
@@ -22,17 +24,32 @@ export default function AddUserModal(props: { addToList: Function }) {
   }
 
   function closeModal() {
+    setIsAdminField(false);
+    setEmailField("");
+    setPwField("");
+    setSubmitError("");
     setIsOpen(false);
   }
 
+  function addUserToDb() {
+    // throw Error("Not implemented");
+  }
+
   function submit() {
-    const id = demoId
-    setDemoId(demoId+1);
-    props.addToList(id, email, isAdmin);
-    setIsAdmin(false);
-    setEmail("");
-    setPw("");
-    closeModal();
+    try {
+      checkEmailValidity(emailField);
+      addUserToDb();
+      const id = demoId;
+      setDemoId(demoId + 1);
+      props.addToList(id, emailField, isAdminField);
+      closeModal();
+    } catch (e) {
+      if (typeof e === "string") {
+        setSubmitError(e); // works, `e` narrowed to string
+      } else if (e instanceof Error) {
+        setSubmitError(e.message);
+      }
+    }
   }
 
   return (
@@ -56,15 +73,15 @@ export default function AddUserModal(props: { addToList: Function }) {
             id="email-input"
             type="text"
             placeholder="User Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={emailField}
+            onChange={(e) => setEmailField(e.target.value)}
           />
           <input
             id="password-input"
-            type="text"
+            type="password"
             placeholder="User Password"
-            value={pw}
-            onChange={(e) => setPw(e.target.value)}
+            value={pwField}
+            onChange={(e) => setPwField(e.target.value)}
           />
           <label id="admin-label" htmlFor="admin">
             Admin?
@@ -72,11 +89,14 @@ export default function AddUserModal(props: { addToList: Function }) {
           <input
             type="checkbox"
             id="admin-checkbox"
-            checked={isAdmin}
+            checked={isAdminField}
             onChange={handleAdminChange}
           />
+          <label id="error-label" htmlFor="admin">
+            {submitError}
+          </label>
           <button
-            id="close-button"
+            id="cancel-button"
             className="btn btn-primary btn-block btn-large"
             onClick={closeModal}
           >

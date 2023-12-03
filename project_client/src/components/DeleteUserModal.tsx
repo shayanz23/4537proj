@@ -1,4 +1,4 @@
-import "./DeleteUserModal.css";
+
 import Modal from "react-modal";
 import React from "react";
 import { remove } from "firebase/database";
@@ -46,7 +46,7 @@ export default function DeleteUserModal(props: {
         <div id="popup-container">
           <h4 id="popup-title">Delete {email}?</h4>
           <button
-            id="close-button"
+            id="cancel-button"
             className="btn btn-primary btn-block btn-large"
             onClick={closeModal}
           >

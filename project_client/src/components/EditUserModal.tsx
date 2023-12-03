@@ -1,6 +1,7 @@
 import "./EditUserModal.css";
 import Modal from "react-modal";
 import React from "react";
+import { checkEmailValidity } from "./Validity";
 
 export default function EditUserModal(props: {
   userId: string;
@@ -11,12 +12,14 @@ export default function EditUserModal(props: {
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [email, setEmail] = React.useState(props.userEmail);
   const [isAdmin, setIsAdmin] = React.useState(props.userAdmin);
+  const [submitError, setSubmitError] = React.useState("");
   function openModal() {
     setIsOpen(true);
   }
 
   function afterOpenModal() {
     // references are now sync'd and can be accessed.
+    setEmail(props.userEmail);
   }
 
   function handleAdminChange() {
@@ -28,8 +31,17 @@ export default function EditUserModal(props: {
   }
 
   function submit() {
-    props.editUser(props.userId, email, isAdmin);
-    closeModal();
+    try {
+      checkEmailValidity(email);
+      props.editUser(props.userId, email, isAdmin);
+      closeModal();
+    } catch (e) {
+      if (typeof e === "string") {
+        setSubmitError(e); // works, `e` narrowed to string
+      } else if (e instanceof Error) {
+        setSubmitError(e.message);
+      }
+    }
   }
 
   return (
@@ -48,7 +60,7 @@ export default function EditUserModal(props: {
         ariaHideApp={false}
       >
         <div id="popup-container">
-          <h3 id="popup-title">Add User</h3>
+          <h3 id="popup-title">Edit User</h3>
           <input
             id="email-input"
             type="text"
@@ -65,8 +77,11 @@ export default function EditUserModal(props: {
             checked={isAdmin}
             onChange={handleAdminChange}
           />
+          <label id="error-label" htmlFor="admin">
+            {submitError}
+          </label>
           <button
-            id="close-button"
+            id="cancel-button"
             className="btn btn-primary btn-block btn-large"
             onClick={closeModal}
           >

@@ -34,7 +34,7 @@ function NavBar() {
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            {cookies.get("user").username}
+            {cookies.get("user").email}
           </p>
           <ul className="dropdown-menu" >
             <li>
