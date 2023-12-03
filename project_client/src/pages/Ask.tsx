@@ -60,7 +60,7 @@ function Ask() {
       </div>
     );
   } else {
-    return <Navigate to="/" />;
+    return <Navigate to="/login" />;
   }
 }
 

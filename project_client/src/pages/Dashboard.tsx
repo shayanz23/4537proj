@@ -20,6 +20,6 @@ export default function Dashboard() {
       </div>
     );
   } else {
-    return <Navigate to="/" />;
+    return <Navigate to="/login" />;
   }
 }

@@ -1,16 +1,18 @@
-import "./EditUserModal.css";
+import "./AddUserModal.css";
 import Modal from "react-modal";
 import React from "react";
 
-export default function EditUserModal(props: {
-  userId: string;
-  userEmail: string;
-  userAdmin: boolean;
-  editUser: Function;
-}) {
+export default function AddUserModal(props: { addToList: Function }) {
   const [modalIsOpen, setIsOpen] = React.useState(false);
-  const [email, setEmail] = React.useState(props.userEmail);
-  const [isAdmin, setIsAdmin] = React.useState(props.userAdmin);
+  const [email, setEmail] = React.useState("");
+  const [pw, setPw] = React.useState("");
+  const [isAdmin, setIsAdmin] = React.useState(false);
+  const [demoId, setDemoId] = React.useState(0);
+
+  function handleAdminChange() {
+    setIsAdmin(!isAdmin);
+  }
+
   function openModal() {
     setIsOpen(true);
   }
@@ -19,16 +21,17 @@ export default function EditUserModal(props: {
     // references are now sync'd and can be accessed.
   }
 
-  function handleAdminChange() {
-    setIsAdmin(!isAdmin);
-  }
-
   function closeModal() {
     setIsOpen(false);
   }
 
   function submit() {
-    props.editUser(props.userId, email, isAdmin);
+    const id = demoId
+    setDemoId(demoId+1);
+    props.addToList(id, email, isAdmin);
+    setIsAdmin(false);
+    setEmail("");
+    setPw("");
     closeModal();
   }
 
@@ -38,13 +41,13 @@ export default function EditUserModal(props: {
         className="btn btn-primary btn-block btn-large"
         onClick={openModal}
       >
-        Edit User
+        Add User
       </button>
       <Modal
         isOpen={modalIsOpen}
         onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
-        contentLabel="Edit User Modal"
+        contentLabel="Add User Modal"
         ariaHideApp={false}
       >
         <div id="popup-container">
@@ -55,6 +58,13 @@ export default function EditUserModal(props: {
             placeholder="User Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            id="password-input"
+            type="text"
+            placeholder="User Password"
+            value={pw}
+            onChange={(e) => setPw(e.target.value)}
           />
           <label id="admin-label" htmlFor="admin">
             Admin?

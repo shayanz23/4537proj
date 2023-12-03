@@ -1,16 +1,16 @@
-import "./EditUserModal.css";
+import "./DeleteUserModal.css";
 import Modal from "react-modal";
 import React from "react";
+import { remove } from "firebase/database";
 
-export default function EditUserModal(props: {
+export default function DeleteUserModal(props: {
   userId: string;
   userEmail: string;
-  userAdmin: boolean;
-  editUser: Function;
+  removeUser: Function;
 }) {
+  const email = props.userEmail;
   const [modalIsOpen, setIsOpen] = React.useState(false);
-  const [email, setEmail] = React.useState(props.userEmail);
-  const [isAdmin, setIsAdmin] = React.useState(props.userAdmin);
+
   function openModal() {
     setIsOpen(true);
   }
@@ -19,16 +19,12 @@ export default function EditUserModal(props: {
     // references are now sync'd and can be accessed.
   }
 
-  function handleAdminChange() {
-    setIsAdmin(!isAdmin);
-  }
-
   function closeModal() {
     setIsOpen(false);
   }
 
   function submit() {
-    props.editUser(props.userId, email, isAdmin);
+    props.removeUser(props.userId);
     closeModal();
   }
 
@@ -38,33 +34,17 @@ export default function EditUserModal(props: {
         className="btn btn-primary btn-block btn-large"
         onClick={openModal}
       >
-        Edit User
+        Delete
       </button>
       <Modal
         isOpen={modalIsOpen}
         onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
-        contentLabel="Edit User Modal"
+        contentLabel="Delete User Modal"
         ariaHideApp={false}
       >
         <div id="popup-container">
-          <h3 id="popup-title">Add User</h3>
-          <input
-            id="email-input"
-            type="text"
-            placeholder="User Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <label id="admin-label" htmlFor="admin">
-            Admin?
-          </label>
-          <input
-            type="checkbox"
-            id="admin-checkbox"
-            checked={isAdmin}
-            onChange={handleAdminChange}
-          />
+          <h4 id="popup-title">Delete {email}?</h4>
           <button
             id="close-button"
             className="btn btn-primary btn-block btn-large"

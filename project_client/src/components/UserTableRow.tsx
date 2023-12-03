@@ -1,9 +1,12 @@
 import EditUserModal from "./EditUserModal";
+import DeleteUserModal from "./DeleteUserModal";
 
 export default function UserTableRow(props: {
   userId: string;
   userEmail: string;
   userAdmin: boolean;
+  editUser: Function;
+  removeUser: Function;
 }) {
   const id = props.userId;
   const email = props.userEmail;
@@ -11,19 +14,14 @@ export default function UserTableRow(props: {
   const adminString = admin ? "true" : "false";
 
   return (
-    <tr id={id + "-row"}>
-      <td id={id + "-email"}>{email}</td>
-      <td id={id + "-admin"}>{adminString}</td>
+    <tr key={id + "-row"}>
+      <td key={id + "-email"}>{email}</td>
+      <td key={id + "-admin"}>{adminString}</td>
       <td>
-        <EditUserModal userId={id} userEmail={email} userAdmin={admin} />
+        <EditUserModal key={id+ "-edit"} userId={id} userEmail={email} userAdmin={admin} editUser={props.editUser}/>
       </td>
       <td>
-        <button
-          id={id + "-delete"}
-          className="btn btn-primary btn-block btn-large"
-        >
-          Delete
-        </button>
+        <DeleteUserModal key={id+ "-delete"} userId={id} userEmail={email} removeUser={props.removeUser}/>
       </td>
     </tr>
   );
