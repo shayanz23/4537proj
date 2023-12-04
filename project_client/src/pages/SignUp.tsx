@@ -4,10 +4,7 @@ import { db } from ".././components/firebaseConfig.tsx";
 import { Navigate, useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import "./container.css";
-import {
-  checkEmailValidity,
-  checkPasswordValidity,
-} from "../components/Validity.tsx";
+import { emailValidate, pwValidate } from "../components/Validate.tsx";
 
 function SignUp() {
   const [email, setEmail] = useState<string>("");
@@ -19,8 +16,8 @@ function SignUp() {
 
   function valid(email: string, password: string) {
     try {
-      checkEmailValidity(email);
-      checkPasswordValidity(password);
+      emailValidate(email);
+      pwValidate(password);
     } catch (e) {
       if (typeof e === "string") {
         setResponse(e); // works, `e` narrowed to string

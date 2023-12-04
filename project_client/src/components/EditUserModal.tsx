@@ -1,7 +1,7 @@
 import "./EditUserModal.css";
 import Modal from "react-modal";
 import React from "react";
-import { checkEmailValidity } from "./Validity";
+import { emailValidate } from "./Validate";
 
 export default function EditUserModal(props: {
   userId: string;
@@ -32,7 +32,7 @@ export default function EditUserModal(props: {
 
   function submit() {
     try {
-      checkEmailValidity(email);
+      emailValidate(email);
       props.editUser(props.userId, email, isAdmin);
       closeModal();
     } catch (e) {
