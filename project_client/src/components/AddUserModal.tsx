@@ -1,7 +1,7 @@
 import Modal from "react-modal";
 import React from "react";
 import { set } from "firebase/database";
-import { emailValidate } from "./Validate";
+import { emailValidate, pwValidate } from "./Validate";
 
 export default function AddUserModal(props: { addToList: Function }) {
   const [modalIsOpen, setIsOpen] = React.useState(false);
@@ -38,6 +38,7 @@ export default function AddUserModal(props: { addToList: Function }) {
   function submit() {
     try {
       emailValidate(emailField);
+      pwValidate(pwField);
       addUserToDb();
       const id = demoId;
       setDemoId(demoId + 1);
