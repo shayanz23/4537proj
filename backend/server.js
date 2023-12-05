@@ -6,6 +6,7 @@ require('dotenv').config();
 const serviceAccount = require('./firebase/credentials.json');
 const adminRoutes = require('../backend/routes/adminRoutes/adminRoutes');
 const authRoutes = require('../backend/routes/authenticationRoutes/authenticationRoutes');
+const userInfo = require('../backend/routes/userInfo/userInfo')
 
 const admin = require('firebase-admin');
 admin.initializeApp({
@@ -27,6 +28,7 @@ app.use((req, res, next) => {
 
 app.use('/admin', adminRoutes);
 app.use('/auth', authRoutes);
+app.use('/userInfo', userInfo);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

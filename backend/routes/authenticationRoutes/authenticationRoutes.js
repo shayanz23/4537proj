@@ -23,14 +23,11 @@ router.post('/register', async (req, res) => {
             admin: false,
         });
 
-        const newUserSnapshot = await userDocRef.get();
-        const newUser = newUserSnapshot.data();
-
-        const accessToken = tokenGenerator(newUser.uid);
-
+        const accessToken = tokenGenerator(userDocRef.id);
+        console.log(userDocRef.id)
         res.cookie('access_token', accessToken, { httpOnly: true });
         
-        res.json({ message: 'User registered successfully', accessToken, calls: newUser.calls });
+        res.json({ message: 'User registered successfully', accessToken, calls: 0 });
     } catch (error) {
         console.error('Registration error', error);
         res.status(500).send('Internal Server Error');
@@ -47,15 +44,16 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ error: 'Invalid username or password' });
         }
 
-        const user = userSnapshot.docs[0].data();
+        const userDoc = userSnapshot.docs[0];
 
+        const accessToken = tokenGenerator(userDoc.id);
+        console.log(userDoc.id)
+        const user = userDoc.data();
         const decodedPassword = jwt.verify(user.password, process.env.PASSWORD_CODER);
 
-        if (decodedPassword !== password) {
+        if (decodedPassword.password !== password) {
             return res.status(401).json({ error: 'Invalid username or password' });
         }
-
-        const accessToken = tokenGenerator(user.uid);
 
         res.cookie('access_token', accessToken, { httpOnly: true });
 
@@ -67,3 +65,4 @@ router.post('/login', async (req, res) => {
 });
 
 module.exports = router;
+
