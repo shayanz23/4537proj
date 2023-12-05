@@ -2,6 +2,7 @@ import { Navigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import "./container.css";
 import { useState } from "react";
+import currentUser from "../currentUser";
 
 export default function Dashboard() {
   const [numOfReqs, setNumOfReqs] = useState(0);

@@ -2,6 +2,7 @@ import Cookies from "universal-cookie";
 import { Navigate } from "react-router-dom";
 import { useState } from "react";
 import "./container.css";
+import currentUser from "../currentUser";
 
 type Message = {
   text: string;

@@ -1,4 +1,5 @@
 import "./container.css";
+import currentUser from "../currentUser";
 
 function Index() {
     return (

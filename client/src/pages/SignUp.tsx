@@ -5,6 +5,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import "./container.css";
 import { pwValidate } from "../components/Validate.tsx";
+import currentUser from "../currentUser";
 
 function SignUp() {
   const [username, setUsername] = useState<string>("");

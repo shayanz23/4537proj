@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import "./container.css";
+import currentUser from "../currentUser";
 
 function Login() {
   const [username, setUsername] = useState<string>("");
@@ -29,7 +30,10 @@ function Login() {
 
   const LoginInEventHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const apiResponse = await login(loginUrl, { username: username, password: password })
+    const apiResponse = await login(loginUrl, {
+      username: username,
+      password: password,
+    });
     if (apiResponse.error !== undefined) {
       setResponse(apiResponse.error);
       return;
@@ -40,6 +44,19 @@ function Login() {
     console.log(apiResponse);
     setResponse("Username or password is incorrect!");
   };
+
+  function checkAuth() {
+    if (currentUser.status === "") {
+      setTimeout(checkAuth, 1000);
+    } else if (currentUser.status === "Authorized" && currentUser.isAdmin) {
+      navigate("/admin");
+    } else if (currentUser.status === "Authorized") {
+      navigate("/dashboard");
+    }
+    console.log(currentUser.status);
+  }
+
+  checkAuth();
 
   if (
     cookies.get("user") !== null &&

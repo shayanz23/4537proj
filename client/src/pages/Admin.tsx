@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Cookies from "universal-cookie";
 import UserTableRow from "../components/UserTableRow";
@@ -7,6 +7,7 @@ import "./container.css";
 import User from "../components/User";
 import "../components/EditUserModal.css";
 import { useEffect } from "react";
+import currentUser from "../currentUser";
 
 export default function Dashboard() {
   const cookies = new Cookies();
@@ -15,6 +16,7 @@ export default function Dashboard() {
   const [userList, setUserList] = useState<User[]>([]);
   const [numOfReqs, setNumOfReqs] = useState([]);
   const URL = "http://localhost:3000/API/V1";
+  const navigate = useNavigate();
 
   const getAllUsers = async () => {
     try {
@@ -54,6 +56,7 @@ export default function Dashboard() {
       isAdmin: isAdmin,
       numOfReqs: 0,
       data: undefined,
+      status: "",
     };
     new_array.push(new_user);
     setUserList(new_array);
@@ -89,84 +92,91 @@ export default function Dashboard() {
     setUserList(newArray);
   }
 
+  function checkAuth() {
+    if (currentUser.status === "") {
+      setTimeout(checkAuth, 1000);
+    } else if (currentUser.status === "Authorized" && !currentUser.isAdmin) {
+      navigate("/dashboard");
+    } else if (currentUser.status === "Unauthorized") {
+      navigate("/login");
+    }
+    console.log(currentUser.status);
+  }
+
+  checkAuth();
+
   // If the user is not logged in, redirect them to the login page.
   // If the user is logged in but not an admin, redirect them to the dashboard.
-  if (cookies.get("user") !== undefined && !cookies.get("user").admin) {
-    return <Navigate to="/dashboard" />;
-  } else if (cookies.get("user") !== undefined && cookies.get("user").admin) {
-    return (
-      <div className="container">
-        <h1 style={{ width: "100%", marginTop: "10px" }}>Admin Dashboard</h1>
-        <table style={{ width: "100%", marginTop: "10px" }}>
-          <thead>
-            <tr>
-              <th>Method</th>
-              <th>Endpoint</th>
-              <th>Requests</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>POST</td>
-              <td>/API/V1/auth/register</td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td>POST</td>
-              <td>/API/V1/auth/login</td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td>GET</td>
-              <td>/API/V1/userInfo/getUserName</td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td>GET</td>
-              <td>/API/V1/userInfo/getCalls</td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td>GET</td>
-              <td>/API/V1/admin/getAllUsers</td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td>DELETE</td>
-              <td>/API/V1/admin/deleteUser</td>
-              <td>0</td>
-            </tr>
-          </tbody>
-        </table>
-        <table style={{ width: "100%", marginTop: "10px" }}>
-          {/* Table for User Details */}
-          <thead>
-            <tr>
-              <th>User username</th>
-              <th>Admin?</th>
-              <th>Number Of Requests</th>
-              <th>Edit</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            {userList.map((user) => (
-              <UserTableRow
-                key={user.id}
-                userId={user.id}
-                userUsername={user.data.username}
-                userAdmin={user.data.admin}
-                numOfReqs={user.data.calls || 0}
-                editUser={editUser}
-                removeUser={removeUser}
-              />
-            ))}
-          </tbody>
-        </table>
-        <AddUserModal addToList={addToList} />
-      </div>
-    );
-  } else {
-    return <Navigate to="/login" />;
-  }
+  return (
+    <div className="container">
+      <h1 style={{ width: "100%", marginTop: "10px" }}>Admin Dashboard</h1>
+      <table style={{ width: "100%", marginTop: "10px" }}>
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>Endpoint</th>
+            <th>Requests</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>POST</td>
+            <td>/API/V1/auth/register</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>POST</td>
+            <td>/API/V1/auth/login</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>GET</td>
+            <td>/API/V1/userInfo/getUserName</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>GET</td>
+            <td>/API/V1/userInfo/getCalls</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>GET</td>
+            <td>/API/V1/admin/getAllUsers</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>DELETE</td>
+            <td>/API/V1/admin/deleteUser</td>
+            <td>0</td>
+          </tr>
+        </tbody>
+      </table>
+      <table style={{ width: "100%", marginTop: "10px" }}>
+        {/* Table for User Details */}
+        <thead>
+          <tr>
+            <th>User username</th>
+            <th>Admin?</th>
+            <th>Number Of Requests</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {userList.map((user) => (
+            <UserTableRow
+              key={user.id}
+              userId={user.id}
+              userUsername={user.data.username}
+              userAdmin={user.data.admin}
+              numOfReqs={user.data.calls || 0}
+              editUser={editUser}
+              removeUser={removeUser}
+            />
+          ))}
+        </tbody>
+      </table>
+      <AddUserModal addToList={addToList} />
+    </div>
+  );
 }
