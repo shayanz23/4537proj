@@ -4,29 +4,26 @@ import Cookies from "universal-cookie";
 import UserTableRow from "../components/UserTableRow";
 import AddUserModal from "../components/AddUserModal";
 import "./container.css";
-import ListUser from "../components/ListUser";
+import User from "../components/User";
 import "../components/EditUserModal.css";
 import { useEffect } from "react";
-
-
 
 export default function Dashboard() {
   const cookies = new Cookies();
   // console.log(cookies.get("user"));
 
-  const [userList, setUserList] = useState<ListUser[]>([]);
+  const [userList, setUserList] = useState<User[]>([]);
   const [numOfReqs, setNumOfReqs] = useState([]);
-  const URL = 'http://localhost:3000/API/V1'
+  const URL = "http://localhost:3000/API/V1";
 
   const getAllUsers = async () => {
     try {
-      const response = await fetch(URL + '/admin/getAllUsers');
+      const response = await fetch(URL + "/admin/getAllUsers");
       const users = await response.json();
-      console.log(users)
+      console.log(users);
       return users;
-
     } catch (error) {
-      console.error('Error getting users', error);
+      console.error("Error getting users", error);
       throw error;
     }
   };
@@ -36,7 +33,7 @@ export default function Dashboard() {
         const users = await getAllUsers();
         setUserList(users);
       } catch (error) {
-        console.error('Error fetching users', error);
+        console.error("Error fetching users", error);
       }
     };
 
@@ -51,12 +48,12 @@ export default function Dashboard() {
       new_array.push(userList[i]);
     }
     // Add the new user to the new array.
-    const new_user: ListUser = {
+    const new_user: User = {
       id: id,
       username: username,
       isAdmin: isAdmin,
       numOfReqs: 0,
-      data: undefined
+      data: undefined,
     };
     new_array.push(new_user);
     setUserList(new_array);
@@ -139,9 +136,9 @@ export default function Dashboard() {
               <td>/API/V1/admin/deleteUser</td>
               <td>0</td>
             </tr>
-
           </tbody>
-        </table><table style={{ width: "100%", marginTop: "10px" }}>
+        </table>
+        <table style={{ width: "100%", marginTop: "10px" }}>
           {/* Table for User Details */}
           <thead>
             <tr>
