@@ -1,6 +1,6 @@
 import Modal from "react-modal";
 import React from "react";
-import { remove } from "firebase/database";
+import apiUrl from "../apiUrl";
 
 export default function DeleteUserModal(props: {
   userId: string;
@@ -9,6 +9,7 @@ export default function DeleteUserModal(props: {
 }) {
   const username = props.userUsername;
   const [modalIsOpen, setIsOpen] = React.useState(false);
+  let success = false;
 
   function openModal() {
     setIsOpen(true);
@@ -22,9 +23,35 @@ export default function DeleteUserModal(props: {
     setIsOpen(false);
   }
 
-  function submit() {
-    props.removeUser(props.userId);
-    closeModal();
+  async function deleteUserFromDb(username: string) {
+    try {
+      const response = await fetch(apiUrl + "/admin/deleteUser", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: username,
+        }),
+      });
+
+      const responseText = await response.text();
+      console.log(responseText); // Log the raw response text
+
+      const msg = JSON.parse(responseText);
+      success = true;
+      return msg;
+    } catch (error) {
+      console.error("Error deleting user", error);
+      throw error;
+    }
+  }
+  async function submit() {
+    deleteUserFromDb(username);
+    if (success) {
+      props.removeUser(props.userId);
+      closeModal();
+    }
   }
 
   return (

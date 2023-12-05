@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
-import { db } from ".././components/firebaseConfig.tsx";
 import { Navigate, useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import "./container.css";
 import { pwValidate } from "../components/Validate.tsx";
 import currentUser from "../currentUser";
+import apiUrl from "../apiUrl.tsx";
+import { fetchCalls, fetchAdmin, fetchUsername } from "../fetches.tsx";
 
 function SignUp() {
   const [username, setUsername] = useState<string>("");
@@ -14,6 +14,7 @@ function SignUp() {
   const [response, setResponse] = useState<string>("");
   const navigate = useNavigate();
   const cookies = new Cookies();
+  let success = false;
 
   function valid(username: string, password: string) {
     try {
@@ -30,41 +31,68 @@ function SignUp() {
     return true;
   }
 
+  async function register(username: string, password: string) {
+    try {
+      const response = await fetch(apiUrl + "/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password,
+        }),
+      });
+
+      const responseText = await response.text();
+      console.log(responseText); // Log the raw response text
+
+      const msg = JSON.parse(responseText);
+      success = true;
+      return msg;
+    } catch (error) {
+      console.error("Error deleting user", error);
+      throw error;
+    }
+  }
+
   const signUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!valid(username, password)) {
       return;
+    }  
+    if (password !== confirmedPassword) {
+      setResponse("Passwords do not match!");
+      return;
     }
-    try {
-      const q = query(
-        collection(db, "users"),
-        where("username", "==", username)
-      );
+    const apiResponse = await register(username, password);
 
-      const querySnapshot = await getDocs(q);
-      if (!querySnapshot.empty) {
-        setResponse("Username already used!");
-        return;
-      }
-      if (password != confirmedPassword) {
-        setResponse("Passwords don't match!");
-        return;
-      }
-      await addDoc(collection(db, "users"), {
-        admin: false,
-        username: username,
-        password,
-      });
-      cookies.set(
-        "user",
-        { admin: false, username: username, password },
-        { path: "/" }
-      );
-      navigate("/dashboard", { replace: true });
-    } catch (err) {
-      console.error("Error adding document: ", err);
+    if (apiResponse.error !== undefined) {
+      setResponse(apiResponse.error);
+      return;
+    } else {
+      console.log(apiResponse.message);
+      cookies.set("accessToken", apiResponse.accessToken, { path: "/" });
+      fetchCalls();
+      fetchAdmin();
+      fetchUsername();
+      setTimeout(checkAuth, 2000);
     }
   };
+
+  function checkAuth() {
+    if (currentUser.status === "") {
+      setTimeout(checkAuth, 1000);
+    } else if (currentUser.status === "Authorized" && currentUser.isAdmin) {
+      navigate("/admin");
+    } else if (currentUser.status === "Authorized") {
+      navigate("/dashboard");
+    }
+    console.log(currentUser.status);
+  }
+
+  checkAuth();
+
   console.log(cookies.get("user"));
   if (
     cookies.get("user") !== null &&
