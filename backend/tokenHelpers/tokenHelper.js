@@ -16,6 +16,21 @@ const authenticateToken = (req, res, next) => {
     });
 };
 
+const authenticateTokenAdmin = (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (token == null) {
+        return res.sendStatus(401);
+    }
+    jwt.verify(token, process.env.ADMIN, (error, user) => {
+        if (error) { return res.sendStatus(403); }
+        const { iat, ...userWithoutIAT } = user;
+        req.user = userWithoutIAT;
+        next();
+    });
+};
+
 const passwordEncoder = (password) => {
     try {
         return jwt.sign({ password }, process.env.PASSWORD_CODER);
@@ -41,4 +56,4 @@ const tokenGenerator = (uid) => {
     return token;
 };
 
-module.exports = { authenticateToken, passwordEncoder, passwordDecoder, tokenGenerator };
+module.exports = { authenticateToken, passwordEncoder, passwordDecoder, tokenGenerator, authenticateTokenAdmin };

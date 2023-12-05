@@ -9,6 +9,7 @@ import "../components/EditUserModal.css";
 import { useEffect } from "react";
 import currentUser from "../currentUser";
 
+
 export default function Dashboard() {
   const cookies = new Cookies();
   // console.log(cookies.get("user"));
@@ -29,6 +30,8 @@ export default function Dashboard() {
       throw error;
     }
   };
+
+  
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -41,6 +44,9 @@ export default function Dashboard() {
 
     fetchUsers();
   }, []);
+
+
+
 
   // Add a new user to the list of users.
   function addToList(id: string, username: string, isAdmin: boolean) {
@@ -56,7 +62,7 @@ export default function Dashboard() {
       isAdmin: isAdmin,
       numOfReqs: 0,
       data: undefined,
-      status: "",
+      status: ""
     };
     new_array.push(new_user);
     setUserList(new_array);
