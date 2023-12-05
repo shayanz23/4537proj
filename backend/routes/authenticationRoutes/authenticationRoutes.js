@@ -36,6 +36,8 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
     try {
         const { username, password } = req.body;
+        console.log(username)
+        console.log(password)
 
         const userSnapshot = await admin.firestore().collection('users').where('username', '==', username).get();
 

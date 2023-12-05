@@ -30,7 +30,7 @@ adminRoutes.delete('/deleteUser', authenticateToken, async (req, res) => {
         if (userSnapshot.empty) {
             return res.status(404).json({ error: 'User not found' });
         }
-
+        
 
         const userId = userSnapshot.docs[0].id;
         await admin.firestore().collection('users').doc(userId).delete();
