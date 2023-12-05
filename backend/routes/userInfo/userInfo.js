@@ -22,14 +22,17 @@ userInfo.get('/getCalls', authenticateToken, async (req, res) => {
     }
 });
 
+
+// CHATGPT WAS USED IN THIS ENDPOINT
 userInfo.put('/upCallCount', authenticateToken, async (req, res) => {
     try {
         const userUid = req.user.uid;
 
         const userDocRef = admin.firestore().collection('users').doc(userUid);
 
-        // Use Firestore transaction to ensure atomicity
+        // START OF GPT
         await admin.firestore().runTransaction(async (transaction) => {
+        // END OF GPT
             const userSnapshot = await transaction.get(userDocRef);
 
             if (!userSnapshot.exists) {
@@ -39,7 +42,6 @@ userInfo.put('/upCallCount', authenticateToken, async (req, res) => {
             const userData = userSnapshot.data();
             const newCallsCount = (userData.calls || 0) + 1;
 
-            // Update the calls count in the document
             transaction.update(userDocRef, { calls: newCallsCount });
             res.json({ calls: newCallsCount });
         });
@@ -49,5 +51,6 @@ userInfo.put('/upCallCount', authenticateToken, async (req, res) => {
     }
 });
 
+userInfo.get('/getUserName')
 
 module.exports = userInfo;
