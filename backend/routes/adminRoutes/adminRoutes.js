@@ -23,27 +23,8 @@ adminRoutes.get(baseUri + '/getAllUsers', async (req, res) => {
     }
 });
 
-adminRoutes.delete(baseUri + '/deleteUser', async (req, res) => {
-    try {
-        const { username } = req.body;
 
-        const userSnapshot = await admin.firestore().collection('users').where('username', '==', username).get();
-
-        if (userSnapshot.empty) {
-            return res.status(404).json({ error: 'User not found' });
-        }
-
-        // Delete the user from the Firestore collection
-        const userId = userSnapshot.docs[0].id;
-        await admin.firestore().collection('users').doc(userId).delete();
-
-        res.json({ message: 'User deleted successfully' });
-    } catch (error) {
-        console.error('Error deleting user', error);
-        res.status(500).send('Internal Server Error');
-    }
-});
-adminRoutes.delete(baseUri + '/deleteUser', authenticateToken, async (req, res) => {
+adminRoutes.delete('/deleteUser', authenticateToken, async (req, res) => {
     try {
         const { username } = req.body;
 
