@@ -106,7 +106,6 @@ export default function Dashboard() {
     } else if (currentUser.status === "Unauthorized") {
       navigate("/login");
     }
-    console.log(currentUser.status);
   }
 
   checkAuth();

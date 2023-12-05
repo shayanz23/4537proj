@@ -3,6 +3,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import "./container.css";
 import currentUser from "../currentUser";
+import { fetchCalls, fetchAdmin, fetchUsername } from "../fetches.tsx";
 
 function Login() {
   const [username, setUsername] = useState<string>("");
@@ -43,6 +44,10 @@ function Login() {
     }
     console.log(apiResponse);
     setResponse("Username or password is incorrect!");
+    fetchCalls();
+    fetchAdmin();
+    fetchUsername();
+    checkAuth();
   };
 
   function checkAuth() {
