@@ -4,12 +4,10 @@ require('dotenv').config();
 const authenticateToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
-    console.log(token)
+
     if (token == null) {
-        console.log('its null')
         return res.sendStatus(401);
     }
-    console.log('in authToken',jwt.verify(token, process.env.ACCESS_TOKEN_SECRET))
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, user) => {
         if (error) { return res.sendStatus(403); }
         const { iat, ...userWithoutIAT } = user;

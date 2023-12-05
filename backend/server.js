@@ -26,9 +26,9 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/admin', adminRoutes);
-app.use('/auth', authRoutes);
-app.use('/userInfo', userInfo);
+app.use('/API/V1/admin', adminRoutes);
+app.use('/API/V1/auth', authRoutes);
+app.use('/API/V1/userInfo', userInfo);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
