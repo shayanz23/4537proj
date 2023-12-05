@@ -24,7 +24,6 @@ router.post('/register', async (req, res) => {
         });
 
         const accessToken = tokenGenerator(userDocRef.id);
-        console.log(userDocRef.id)
         res.cookie('access_token', accessToken, { httpOnly: true });
         
         res.json({ message: 'User registered successfully', accessToken, calls: 0 });
@@ -47,10 +46,9 @@ router.post('/login', async (req, res) => {
         const userDoc = userSnapshot.docs[0];
 
         const accessToken = tokenGenerator(userDoc.id);
-        console.log(userDoc.id)
+    
         const user = userDoc.data();
         const decodedPassword = jwt.verify(user.password, process.env.PASSWORD_CODER);
-
         if (decodedPassword.password !== password) {
             return res.status(401).json({ error: 'Invalid username or password' });
         }

@@ -13,8 +13,6 @@ adminRoutes.get('/getAllUsers', async (req, res) => {
             id: doc.id,
             data: doc.data(),
         }));
-
-        console.log('Users retrieved successfully:', users);
         res.json(users);
     } catch (error) {
         console.error('Error getting users', error);
