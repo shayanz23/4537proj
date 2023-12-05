@@ -2,11 +2,10 @@ const express = require('express');
 const adminRoutes = express.Router();
 const admin = require('firebase-admin');
 const jwt = require('jsonwebtoken');
-const {authenticateToken} = require('../../tokenHelpers/tokenHelper');
-const baseUri = require('../../baseUri');
+const {authenticateToken} = require('../../tokenHelpers/tokenHelper')
 
 
-adminRoutes.get(baseUri + '/getAllUsers', async (req, res) => {
+adminRoutes.get('/getAllUsers', async (req, res) => {
     try {
         const snapshot = await admin.firestore().collection('users').get();
 
