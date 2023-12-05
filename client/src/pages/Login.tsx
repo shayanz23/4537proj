@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from ".././components/firebaseConfig.tsx";
 import { Navigate, useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import "./container.css";
@@ -10,30 +8,39 @@ function Login() {
   const [password, setPassword] = useState<string>("");
   const [response, setResponse] = useState<string>("");
   const cookies = new Cookies();
+  const loginUrl = "http://localhost:3000/API/V1/auth/login";
   const navigate = useNavigate();
+
+  async function login(url = loginUrl, data = {}) {
+    // Default options are marked with *
+    const response = await fetch(url, {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+      headers: {
+        "Content-Type": "application/json",
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: "follow", // manual, *follow, error
+      referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+      body: JSON.stringify(data), // body data type must match "Content-Type" header
+    });
+    return response.json(); // parses JSON response into native JavaScript objects
+  }
 
   const LoginInEventHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    try {
-      const docRef = await getDocs(collection(db, "users"));
-      docRef.docs.forEach((doc) => {
-        const data = doc.data();
-        if (data.username === username && data.password === password) {
-          console.log("Document read with ID: ", doc.id);
-          cookies.set("user", doc.data(), { path: "/" });
-          if (data.admin === true) {
-            navigate("/admin");
-          } else {
-            navigate("/dashboard");
-          }
-        }
-      });
-    } catch (e) {
-      console.error("Error getting document: ", e);
+    const apiResponse = await login(loginUrl, { username: username, password: password })
+    if (apiResponse.error !== undefined) {
+      setResponse(apiResponse.error);
+      return;
+    } else {
+      console.log(apiResponse.message);
+      cookies.set("accessToken", apiResponse.accessToken, { path: "/" });
     }
+    console.log(apiResponse);
     setResponse("Username or password is incorrect!");
   };
+
   if (
     cookies.get("user") !== null &&
     cookies.get("user") !== undefined &&
