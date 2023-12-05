@@ -1,7 +1,5 @@
 import Modal from "react-modal";
 import React from "react";
-import { set } from "firebase/database";
-import { pwValidate } from "./Validate";
 import Cookies from "universal-cookie";
 
 export default function AddUserModal(props: { addToList: Function }) {
