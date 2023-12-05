@@ -29,7 +29,7 @@ router.post('/register', async (req, res) => {
         const newUser = newUserSnapshot.data();
 
         const accessToken = tokenGenerator(newUser.uid);
-        res.json({ message: 'User registered successfully', accessToken });
+        res.json({ message: 'User registered successfully', accessToken, calls: newUser.calls });
     } catch (error) {
         console.error('Registration error', error);
         res.status(500).send('Internal Server Error');
@@ -56,9 +56,9 @@ router.post('/login', async (req, res) => {
         }
 
         const accessToken = tokenGenerator(user.uid);
-        res.json({ message: 'Logged in', accessToken });
+        res.json({ message: 'Logged in', accessToken, calls: user.calls });
     } catch (error) {
-        console.error('Authentication error', error);
+        console.error('Authentication error', error, );
         res.status(500).send('Internal Server Error');
     }
 });
