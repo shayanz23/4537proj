@@ -11,7 +11,7 @@ type Message = {
 function Ask() {
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
-
+  
   const addMessage = (text: string, sender: "user" | "ai") => {
     const newMessage = { text, sender };
     setMessages([...messages, newMessage]);

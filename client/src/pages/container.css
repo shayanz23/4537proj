@@ -11,7 +11,7 @@
 /* Style for the conversation area */
 .conversation {
   overflow-y: auto;
-  max-height: 300px; /* Adjust this based on your design */
+  max-height: 80%; /* Adjust this based on your design */
   padding-bottom: 40px; /* To accommodate space for the button */
 }
 

@@ -5,6 +5,7 @@ export default function UserTableRow(props: {
   userId: string;
   userEmail: string;
   userAdmin: boolean;
+  numOfReqs: number;
   editUser: Function;
   removeUser: Function;
 }) {
@@ -17,6 +18,7 @@ export default function UserTableRow(props: {
     <tr key={id + "-row"}>
       <td key={id + "-email"}>{email}</td>
       <td key={id + "-admin"}>{adminString}</td>
+      <td key={id + "-numOfReqs"}>{props.numOfReqs}</td>
       <td>
         <EditUserModal key={id+ "-edit"} userId={id} userEmail={email} userAdmin={admin} editUser={props.editUser}/>
       </td>
