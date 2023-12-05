@@ -2,9 +2,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 const admin = require('firebase-admin');
-const {tokenGenerator, passwordDecoder, passwordEncoder} = require('../../tokenHelpers/tokenHelper')
-
-
+const { tokenGenerator, passwordDecoder, passwordEncoder } = require('../../tokenHelpers/tokenHelper');
 
 router.post('/register', async (req, res) => {
     try {
@@ -29,13 +27,15 @@ router.post('/register', async (req, res) => {
         const newUser = newUserSnapshot.data();
 
         const accessToken = tokenGenerator(newUser.uid);
+
+        res.cookie('access_token', accessToken, { httpOnly: true });
+        
         res.json({ message: 'User registered successfully', accessToken, calls: newUser.calls });
     } catch (error) {
         console.error('Registration error', error);
         res.status(500).send('Internal Server Error');
     }
 });
-
 
 router.post('/login', async (req, res) => {
     try {
@@ -56,9 +56,12 @@ router.post('/login', async (req, res) => {
         }
 
         const accessToken = tokenGenerator(user.uid);
+
+        res.cookie('access_token', accessToken, { httpOnly: true });
+
         res.json({ message: 'Logged in', accessToken, calls: user.calls });
     } catch (error) {
-        console.error('Authentication error', error, );
+        console.error('Authentication error', error);
         res.status(500).send('Internal Server Error');
     }
 });
