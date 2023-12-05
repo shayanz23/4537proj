@@ -3,9 +3,11 @@ const jwt = require('jsonwebtoken');
 const userInfo = express.Router();
 const admin = require('firebase-admin');
 const { tokenGenerator, passwordDecoder, passwordEncoder, authenticateToken } = require('../../tokenHelpers/tokenHelper');
+const {updateRequestCount} = require('../helpers/helper')
 
 userInfo.get('/getCalls', authenticateToken, async (req, res) => {
     try {
+        await updateRequestCount('/getCalls')
         const userId = req.user.uid;
 
         const userSnapshot = await admin.firestore().collection('users').doc(userId).get();
@@ -26,6 +28,7 @@ userInfo.get('/getCalls', authenticateToken, async (req, res) => {
 // CHATGPT WAS USED IN THIS ENDPOINT
 userInfo.put('/upCallCount', authenticateToken, async (req, res) => {
     try {
+        await updateRequestCount('/upCallCount')
         const userUid = req.user.uid;
 
         const userDocRef = admin.firestore().collection('users').doc(userUid);
@@ -53,6 +56,8 @@ userInfo.put('/upCallCount', authenticateToken, async (req, res) => {
 
 userInfo.get('/getUserName', authenticateToken, async (req, res) => {
     try {
+
+        await updateRequestCount('/getUserName')
         const userUid = req.user.uid;
 
         const userSnapshot = await admin.firestore().collection('users').doc(userUid).get();
@@ -73,6 +78,7 @@ userInfo.get('/getUserName', authenticateToken, async (req, res) => {
 
 userInfo.get('/getAdminStatus', authenticateToken, async (req, res) => {
     try {
+        await updateRequestCount('/getAdminStatus')
         const userUid = req.user.uid;
 
         const userSnapshot = await admin.firestore().collection('users').doc(userUid).get();

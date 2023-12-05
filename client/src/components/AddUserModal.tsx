@@ -2,6 +2,7 @@ import Modal from "react-modal";
 import React from "react";
 import { set } from "firebase/database";
 import { pwValidate } from "./Validate";
+import { Analytics } from "firebase/analytics";
 
 export default function AddUserModal(props: { addToList: Function }) {
   const [modalIsOpen, setIsOpen] = React.useState(false);
@@ -10,6 +11,31 @@ export default function AddUserModal(props: { addToList: Function }) {
   const [isAdminField, setIsAdminField] = React.useState(false);
   const [submitError, setSubmitError] = React.useState("");
   const [demoId, setDemoId] = React.useState(0);
+
+  const URL = 'http://localhost:3000/API/V1/admin';
+
+  const addUser = async (username: any, password: any, isAdmin: Analytics) => {
+    try {
+      const response = await fetch(`${URL}/addUser`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          password,
+          isAdmin,
+        }),
+      });
+  
+      const newUser = await response.json();
+      return newUser;
+    } catch (error) {
+      console.error('Error adding user', error);
+      throw error;
+    }
+  };
+  
 
   function handleAdminChange() {
     setIsAdminField(!isAdminField);
@@ -35,23 +61,26 @@ export default function AddUserModal(props: { addToList: Function }) {
     // throw Error("Not implemented");
   }
 
-  function submit() {
+  async function submit() {
     try {
-      (usernameField);
       pwValidate(pwField);
-      addUserToDb();
+  
+      await addUser(usernameField, pwField, isAdminField);
+  
       const id = demoId;
       setDemoId(demoId + 1);
       props.addToList(id, usernameField, isAdminField);
+  
       closeModal();
     } catch (e) {
-      if (typeof e === "string") {
-        setSubmitError(e); // works, `e` narrowed to string
+      if (typeof e === 'string') {
+        setSubmitError(e);
       } else if (e instanceof Error) {
         setSubmitError(e.message);
       }
     }
   }
+  
 
   return (
     <div>

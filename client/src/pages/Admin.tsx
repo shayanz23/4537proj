@@ -27,6 +27,8 @@ export default function Dashboard() {
       throw error;
     }
   };
+
+  
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -39,6 +41,9 @@ export default function Dashboard() {
 
     fetchUsers();
   }, []);
+
+
+
 
   // Add a new user to the list of users.
   function addToList(id: string, username: string, isAdmin: boolean) {
