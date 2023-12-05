@@ -64,7 +64,6 @@ function App() {
   });
   return (
     <div className="main-div">
-      <div>{currentUser.status}</div>
       <NavBar />
       <Body />
       <Footer />
