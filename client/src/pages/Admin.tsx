@@ -80,7 +80,39 @@ export default function Dashboard() {
               <th>Requests</th>
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody>
+            <tr>
+              <td>POST</td>
+              <td>/API/V1/auth/register</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>POST</td>
+              <td>/API/V1/auth/login</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>GET</td>
+              <td>/API/V1/userInfo/getUserName</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>GET</td>
+              <td>/API/V1/userInfo/getCalls</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>GET</td>
+              <td>/API/V1/admin/getAllUsers</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>DELETE</td>
+              <td>/API/V1/admin/deleteUser</td>
+              <td>0</td>
+            </tr>
+
+          </tbody>
         </table>
         <table style={{ width: "100%", marginTop: "10px" }}>
           <thead>
