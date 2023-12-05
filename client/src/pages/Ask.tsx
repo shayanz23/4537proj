@@ -1,8 +1,10 @@
 import Cookies from "universal-cookie";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "./container.css";
 import currentUser from "../currentUser";
+import "./container.css";
+import "../components/EditUserModal.css";
 
 type Message = {
   text: string;
@@ -12,7 +14,7 @@ type Message = {
 function Ask() {
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
-  
+
   const addMessage = (text: string, sender: "user" | "ai") => {
     const newMessage = { text, sender };
     setMessages([...messages, newMessage]);
@@ -48,34 +50,43 @@ function Ask() {
   };
 
   const cookies = new Cookies();
-  if (cookies.get("user") !== null && cookies.get("user") !== undefined) {
-    return (
-      <div className="container">
-        <div className="conversation">
-          {messages.map((message, index) => (
-            <div key={index} className={`message ${message.sender}`}>
-              {message.text}
-            </div>
-          ))}
-        </div>
-        <form onSubmit={QuestionEventHandler}>
-          <input
-            type="text"
-            name="question"
-            id="question"
-            placeholder="Type a question..."
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-          />
-          <button type="submit" className="btn btn-primary btn-block btn-large">
-            Submit
-          </button>
-        </form>
-      </div>
-    );
-  } else {
-    return <Navigate to="/login" />;
+
+  const navigate = useNavigate();
+
+  function checkAuth() {
+    if (currentUser.status === "") {
+      setTimeout(checkAuth, 1000);
+    } else if (currentUser.status === "Unauthorized") {
+      navigate("/login");
+    }
   }
+
+  checkAuth();
+
+  return (
+    <div className="container">
+      <div className="conversation">
+        {messages.map((message, index) => (
+          <div key={index} className={`message ${message.sender}`}>
+            {message.text}
+          </div>
+        ))}
+      </div>
+      <form onSubmit={QuestionEventHandler}>
+        <input
+          type="text"
+          name="question"
+          id="question"
+          placeholder="Type a question..."
+          value={question}
+          onChange={(e) => setQuestion(e.target.value)}
+        />
+        <button type="submit" className="btn btn-primary btn-block btn-large">
+          Submit
+        </button>
+      </form>
+    </div>
+  );
 }
 
 export default Ask;

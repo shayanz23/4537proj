@@ -41,13 +41,13 @@ function Login() {
     } else {
       console.log(apiResponse.message);
       cookies.set("accessToken", apiResponse.accessToken, { path: "/" });
+      fetchCalls();
+      fetchAdmin();
+      fetchUsername();
+      setTimeout(checkAuth, 2000);
     }
     console.log(apiResponse);
     setResponse("Username or password is incorrect!");
-    fetchCalls();
-    fetchAdmin();
-    fetchUsername();
-    checkAuth();
   };
 
   function checkAuth() {

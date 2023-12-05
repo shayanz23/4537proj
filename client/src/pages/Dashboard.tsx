@@ -1,29 +1,29 @@
-import { Navigate } from "react-router-dom";
-import Cookies from "universal-cookie";
+import { Navigate, useNavigate } from "react-router-dom";
 import "./container.css";
-import { useState } from "react";
+import "../components/EditUserModal.css";
 import currentUser from "../currentUser";
 
+
 export default function Dashboard() {
-  const [numOfReqs, setNumOfReqs] = useState(0);
-  const cookies = new Cookies();
-  if (
-    cookies.get("user") !== null &&
-    cookies.get("user") !== undefined &&
-    cookies.get("user").admin
-  ) {
-    return <Navigate to="/admin" />;
-  } else if (
-    cookies.get("user") !== null &&
-    cookies.get("user") !== undefined
-  ) {
-    return (
-      <div className="container">
-        <h1>Dashboard</h1>
-        <p>Your total number of requests: {numOfReqs}</p>
-      </div>
-    );
-  } else {
-    return <Navigate to="/login" />;
+
+  const navigate = useNavigate();
+
+  function checkAuth() {
+    if (currentUser.status === "") {
+      setTimeout(checkAuth, 1000);
+    } else if (currentUser.status === "Authorized" && currentUser.isAdmin) {
+      navigate("/admin");
+    } else if (currentUser.status === "Unauthorized") {
+      navigate("/login");
+    }
   }
+
+  checkAuth();
+
+  return (
+    <div className="container">
+      <h1>Dashboard</h1>
+      <p>Your total number of requests: {currentUser.numOfReqs}</p>
+    </div>
+  );
 }
