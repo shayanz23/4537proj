@@ -51,6 +51,47 @@ userInfo.put('/upCallCount', authenticateToken, async (req, res) => {
     }
 });
 
-userInfo.get('/getUserName')
+userInfo.get('/getUserName', authenticateToken, async (req, res) => {
+    try {
+        const userUid = req.user.uid;
+
+        const userSnapshot = await admin.firestore().collection('users').doc(userUid).get();
+
+        if (!userSnapshot.exists) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        const userData = userSnapshot.data();
+        const username = userData.username;
+
+        res.json({ username });
+    } catch (error) {
+        console.error('Error getting username', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+userInfo.get('/getAdminStatus', authenticateToken, async (req, res) => {
+    try {
+        const userUid = req.user.uid;
+
+        const userSnapshot = await admin.firestore().collection('users').doc(userUid).get();
+
+        if (!userSnapshot.exists) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        const userData = userSnapshot.data();
+        const adminStatus = userData.admin;
+
+        res.json({ adminStatus });
+    } catch (error) {
+        console.error('Error getting username', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+
+
 
 module.exports = userInfo;

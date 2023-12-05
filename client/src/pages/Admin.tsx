@@ -6,8 +6,9 @@ import AddUserModal from "../components/AddUserModal";
 import "./container.css";
 import ListUser from "../components/ListUser";
 import "../components/EditUserModal.css";
+import { useEffect } from "react";
 
-// const user = useContext(UserContext);
+
 
 export default function Dashboard() {
   const cookies = new Cookies();
@@ -15,6 +16,32 @@ export default function Dashboard() {
 
   const [userList, setUserList] = useState<ListUser[]>([]);
   const [numOfReqs, setNumOfReqs] = useState([]);
+  const URL = 'http://localhost:3000/API/V1'
+
+  const getAllUsers = async () => {
+    try {
+      const response = await fetch(URL + '/admin/getAllUsers');
+      const users = await response.json();
+      console.log(users)
+      return users;
+
+    } catch (error) {
+      console.error('Error getting users', error);
+      throw error;
+    }
+  };
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const users = await getAllUsers();
+        setUserList(users);
+      } catch (error) {
+        console.error('Error fetching users', error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   // Add a new user to the list of users.
   function addToList(id: string, username: string, isAdmin: boolean) {
@@ -29,6 +56,7 @@ export default function Dashboard() {
       username: username,
       isAdmin: isAdmin,
       numOfReqs: 0,
+      data: undefined
     };
     new_array.push(new_user);
     setUserList(new_array);
@@ -80,9 +108,41 @@ export default function Dashboard() {
               <th>Requests</th>
             </tr>
           </thead>
-          <tbody></tbody>
-        </table>
-        <table style={{ width: "100%", marginTop: "10px" }}>
+          <tbody>
+            <tr>
+              <td>POST</td>
+              <td>/API/V1/auth/register</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>POST</td>
+              <td>/API/V1/auth/login</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>GET</td>
+              <td>/API/V1/userInfo/getUserName</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>GET</td>
+              <td>/API/V1/userInfo/getCalls</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>GET</td>
+              <td>/API/V1/admin/getAllUsers</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>DELETE</td>
+              <td>/API/V1/admin/deleteUser</td>
+              <td>0</td>
+            </tr>
+
+          </tbody>
+        </table><table style={{ width: "100%", marginTop: "10px" }}>
+          {/* Table for User Details */}
           <thead>
             <tr>
               <th>User username</th>
@@ -95,10 +155,11 @@ export default function Dashboard() {
           <tbody>
             {userList.map((user) => (
               <UserTableRow
+                key={user.id}
                 userId={user.id}
-                userUsername={user.username}
-                userAdmin={user.isAdmin}
-                numOfReqs={user.numOfReqs}
+                userUsername={user.data.username}
+                userAdmin={user.data.admin}
+                numOfReqs={user.data.calls || 0}
                 editUser={editUser}
                 removeUser={removeUser}
               />
