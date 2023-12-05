@@ -18,19 +18,24 @@ router.post('/register', async (req, res) => {
             return res.status(400).json({ error: 'Username already exists' });
         }
 
-        await admin.firestore().collection('users').add({
+        const userDocRef = await admin.firestore().collection('users').add({
             username,
             password: encodedPassword,
-            calls: 0,      
-            admin: false, 
+            calls: 0,
+            admin: false,
         });
 
-        res.json({ message: 'User registered successfully' });
+        const newUserSnapshot = await userDocRef.get();
+        const newUser = newUserSnapshot.data();
+
+        const accessToken = tokenGenerator(newUser.uid);
+        res.json({ message: 'User registered successfully', accessToken });
     } catch (error) {
         console.error('Registration error', error);
         res.status(500).send('Internal Server Error');
     }
 });
+
 
 router.post('/login', async (req, res) => {
     try {
