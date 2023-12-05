@@ -8,6 +8,7 @@ import User from "../components/User";
 import "../components/EditUserModal.css";
 import { useEffect } from "react";
 
+
 export default function Dashboard() {
   const cookies = new Cookies();
   // console.log(cookies.get("user"));
@@ -59,6 +60,7 @@ export default function Dashboard() {
       isAdmin: isAdmin,
       numOfReqs: 0,
       data: undefined,
+      status: ""
     };
     new_array.push(new_user);
     setUserList(new_array);

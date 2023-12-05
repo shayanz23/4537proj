@@ -2,7 +2,7 @@ import Modal from "react-modal";
 import React from "react";
 import { set } from "firebase/database";
 import { pwValidate } from "./Validate";
-import { Analytics } from "firebase/analytics";
+import Cookies from "universal-cookie";
 
 export default function AddUserModal(props: { addToList: Function }) {
   const [modalIsOpen, setIsOpen] = React.useState(false);
@@ -11,31 +11,9 @@ export default function AddUserModal(props: { addToList: Function }) {
   const [isAdminField, setIsAdminField] = React.useState(false);
   const [submitError, setSubmitError] = React.useState("");
   const [demoId, setDemoId] = React.useState(0);
+  const cookies = new Cookies;
 
-  const URL = 'http://localhost:3000/API/V1/admin';
-
-  const addUser = async (username: any, password: any, isAdmin: Analytics) => {
-    try {
-      const response = await fetch(`${URL}/addUser`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username,
-          password,
-          isAdmin,
-        }),
-      });
-  
-      const newUser = await response.json();
-      return newUser;
-    } catch (error) {
-      console.error('Error adding user', error);
-      throw error;
-    }
-  };
-  
+  const URL = 'http://localhost:3000/API/V1';
 
   function handleAdminChange() {
     setIsAdminField(!isAdminField);
@@ -57,23 +35,51 @@ export default function AddUserModal(props: { addToList: Function }) {
     setIsOpen(false);
   }
 
-  function addUserToDb() {
-    // throw Error("Not implemented");
-  }
+  const addUserToDb = async (username: string, password: string, isAdmin: boolean) => {
+    try {
+
+      console.log(username, password, isAdmin)
+      const response = await fetch(URL + "/admin/addUser", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${cookies.get("accessToken")}`,
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password,
+          isAdmin: isAdmin,
+        }),
+      });
+  
+      const responseText = await response.text();
+      console.log(responseText); // Log the raw response text
+      
+      const msg = JSON.parse(responseText);
+      return msg;      
+    } catch (error) {
+      console.error("Error adding user", error);
+      throw error;
+    }
+  };
+  
+  
 
   async function submit() {
     try {
-      pwValidate(pwField);
+      console.log("Username:", usernameField);
+      console.log("Password:", pwField);
+      console.log("isAdmin:", isAdminField);
+
   
-      await addUser(usernameField, pwField, isAdminField);
+      await addUserToDb(usernameField, pwField, isAdminField);
   
       const id = demoId;
       setDemoId(demoId + 1);
       props.addToList(id, usernameField, isAdminField);
-  
       closeModal();
     } catch (e) {
-      if (typeof e === 'string') {
+      if (typeof e === "string") {
         setSubmitError(e);
       } else if (e instanceof Error) {
         setSubmitError(e.message);
