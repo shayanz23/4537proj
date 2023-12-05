@@ -6,7 +6,7 @@ import Cookies from "universal-cookie";
 import "./container.css";
 
 function Login() {
-  const [email, setEmail] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [response, setResponse] = useState<string>("");
   const cookies = new Cookies();
@@ -19,7 +19,7 @@ function Login() {
       const docRef = await getDocs(collection(db, "users"));
       docRef.docs.forEach((doc) => {
         const data = doc.data();
-        if (data.email === email && data.password === password) {
+        if (data.username === username && data.password === password) {
           console.log("Document read with ID: ", doc.id);
           cookies.set("user", doc.data(), { path: "/" });
           if (data.admin === true) {
@@ -32,7 +32,7 @@ function Login() {
     } catch (e) {
       console.error("Error getting document: ", e);
     }
-    setResponse("Email or password is incorrect!");
+    setResponse("Username or password is incorrect!");
   };
   if (
     cookies.get("user") !== null &&
@@ -54,11 +54,11 @@ function Login() {
           <form onSubmit={LoginInEventHandler}>
             <input
               type="text"
-              name="email"
-              placeholder="Email"
+              name="username"
+              placeholder="Username"
               required={true}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
             <p>{"\n"}</p>
             <input

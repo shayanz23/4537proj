@@ -14,13 +14,10 @@ export default function Dashboard() {
   // console.log(cookies.get("user"));
 
   const [userList, setUserList] = useState<ListUser[]>([]);
+  const [numOfReqs, setNumOfReqs] = useState([]);
 
   // Add a new user to the list of users.
-  function addToList(
-    id: string,
-    email: string,
-    isAdmin: boolean
-  ) {
+  function addToList(id: string, username: string, isAdmin: boolean) {
     // Create a new array to hold the updated list of users, with the new user added.
     let new_array = [];
     for (let i = 0; i < userList.length; i++) {
@@ -29,7 +26,7 @@ export default function Dashboard() {
     // Add the new user to the new array.
     const new_user: ListUser = {
       id: id,
-      email: email,
+      username: username,
       isAdmin: isAdmin,
       numOfReqs: 0,
     };
@@ -50,16 +47,16 @@ export default function Dashboard() {
     setUserList(new_array);
   }
 
-  //Find the user with the given id and update their email and admin status
-  function editUser(id: string, email: string, isAdmin: boolean) {
+  //Find the user with the given id and update their username and admin status
+  function editUser(id: string, username: string, isAdmin: boolean) {
     // Create a new array to hold the updated list of users.
     let newArray = [];
-    // Find the user with the given id and update their email and admin status.
+    // Find the user with the given id and update their username and admin status.
     for (let i = 0; i < userList.length; i++) {
       if (userList[i].id !== id) {
         newArray.push(userList[i]);
       } else {
-        userList[i].email = email;
+        userList[i].username = username;
         userList[i].isAdmin = isAdmin;
         newArray.push(userList[i]);
       }
@@ -83,58 +80,12 @@ export default function Dashboard() {
               <th>Requests</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>GET</td>
-              <td>/API/v1/users</td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td>GET</td>
-              <td>/API/v1/users/:id</td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td>POST</td>
-              <td>/API/v1/users</td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td>PATCH</td>
-              <td>/API/v1/users/:id</td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td>DELETE</td>
-              <td>/API/v1/users/:id</td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td>GET</td>
-              <td>/API/v1/ask</td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td>GET</td>
-              <td>/API/v1/numOfReqs</td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td>GET</td>
-              <td>/API/v1/numOfReqs/:id</td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td>POST</td>
-              <td>/API/v1/numOfReqs/</td>
-              <td>0</td>
-            </tr>
-          </tbody>
+          <tbody></tbody>
         </table>
         <table style={{ width: "100%", marginTop: "10px" }}>
           <thead>
             <tr>
-              <th>User email</th>
+              <th>User username</th>
               <th>Admin?</th>
               <th>Number Of Requests</th>
               <th>Edit</th>
@@ -145,7 +96,7 @@ export default function Dashboard() {
             {userList.map((user) => (
               <UserTableRow
                 userId={user.id}
-                userEmail={user.email}
+                userUsername={user.username}
                 userAdmin={user.isAdmin}
                 numOfReqs={user.numOfReqs}
                 editUser={editUser}

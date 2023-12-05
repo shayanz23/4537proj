@@ -1,16 +1,16 @@
 import "./EditUserModal.css";
 import Modal from "react-modal";
 import React from "react";
-import { emailValidate } from "./Validate";
+import {} from "./Validate";
 
 export default function EditUserModal(props: {
   userId: string;
-  userEmail: string;
+  userUsername: string;
   userAdmin: boolean;
   editUser: Function;
 }) {
   const [modalIsOpen, setIsOpen] = React.useState(false);
-  const [email, setEmail] = React.useState(props.userEmail);
+  const [username, setUsername] = React.useState(props.userUsername);
   const [isAdmin, setIsAdmin] = React.useState(props.userAdmin);
   const [submitError, setSubmitError] = React.useState("");
   function openModal() {
@@ -19,7 +19,7 @@ export default function EditUserModal(props: {
 
   function afterOpenModal() {
     // references are now sync'd and can be accessed.
-    setEmail(props.userEmail);
+    setUsername(props.userUsername);
   }
 
   function handleAdminChange() {
@@ -32,8 +32,8 @@ export default function EditUserModal(props: {
 
   function submit() {
     try {
-      emailValidate(email);
-      props.editUser(props.userId, email, isAdmin);
+      username;
+      props.editUser(props.userId, username, isAdmin);
       closeModal();
     } catch (e) {
       if (typeof e === "string") {
@@ -62,11 +62,11 @@ export default function EditUserModal(props: {
         <div id="popup-container">
           <h3 id="popup-title">Edit User</h3>
           <input
-            id="email-input"
+            id="username-input"
             type="text"
-            placeholder="User Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            placeholder="User Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
           <label id="admin-label" htmlFor="admin">
             Admin?

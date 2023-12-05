@@ -26,7 +26,7 @@ function NavBar() {
         <a className="navbar-brand" href="/ask">
           Ask
         </a>
-        
+
         <div className="nav-item dropdown end-item">
           <p
             className=" dropdown-toggle"
@@ -34,9 +34,9 @@ function NavBar() {
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            {cookies.get("user").email}
+            {cookies.get("user").username}
           </p>
-          <ul className="dropdown-menu" >
+          <ul className="dropdown-menu">
             <li>
               <a className="dropdown-item" onClick={logout}>
                 Logout

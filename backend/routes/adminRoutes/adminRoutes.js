@@ -2,10 +2,11 @@ const express = require('express');
 const adminRoutes = express.Router();
 const admin = require('firebase-admin');
 const jwt = require('jsonwebtoken');
-const {authenticateToken} = require('../../tokenHelpers/tokenHelper')
+const {authenticateToken} = require('../../tokenHelpers/tokenHelper');
+const baseUri = require('../../baseUri');
 
 
-adminRoutes.get('/getAllUsers', async (req, res) => {
+adminRoutes.get(baseUri + '/getAllUsers', async (req, res) => {
     try {
         const snapshot = await admin.firestore().collection('users').get();
 
@@ -22,7 +23,7 @@ adminRoutes.get('/getAllUsers', async (req, res) => {
     }
 });
 
-adminRoutes.delete('/deleteUser', async (req, res) => {
+adminRoutes.delete(baseUri + '/deleteUser', async (req, res) => {
     try {
         const { username } = req.body;
 
@@ -42,7 +43,7 @@ adminRoutes.delete('/deleteUser', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
-adminRoutes.delete('/deleteUser', authenticateToken, async (req, res) => {
+adminRoutes.delete(baseUri + '/deleteUser', authenticateToken, async (req, res) => {
     try {
         const { username } = req.body;
 

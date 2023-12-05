@@ -3,8 +3,9 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 const admin = require('firebase-admin');
 const { tokenGenerator, passwordDecoder, passwordEncoder } = require('../../tokenHelpers/tokenHelper');
+const baseUri = require('../../baseUri');
 
-router.post('/register', async (req, res) => {
+router.post(baseUri + '/register', async (req, res) => {
     try {
         const { username, password } = req.body;
 
@@ -37,7 +38,7 @@ router.post('/register', async (req, res) => {
     }
 });
 
-router.post('/login', async (req, res) => {
+router.post(baseUri + '/login', async (req, res) => {
     try {
         const { username, password } = req.body;
 

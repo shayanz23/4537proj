@@ -1,11 +1,11 @@
 import Modal from "react-modal";
 import React from "react";
 import { set } from "firebase/database";
-import { emailValidate, pwValidate } from "./Validate";
+import { pwValidate } from "./Validate";
 
 export default function AddUserModal(props: { addToList: Function }) {
   const [modalIsOpen, setIsOpen] = React.useState(false);
-  const [emailField, setEmailField] = React.useState("");
+  const [usernameField, setUsernameField] = React.useState("");
   const [pwField, setPwField] = React.useState("");
   const [isAdminField, setIsAdminField] = React.useState(false);
   const [submitError, setSubmitError] = React.useState("");
@@ -25,7 +25,7 @@ export default function AddUserModal(props: { addToList: Function }) {
 
   function closeModal() {
     setIsAdminField(false);
-    setEmailField("");
+    setUsernameField("");
     setPwField("");
     setSubmitError("");
     setIsOpen(false);
@@ -37,12 +37,12 @@ export default function AddUserModal(props: { addToList: Function }) {
 
   function submit() {
     try {
-      emailValidate(emailField);
+      (usernameField);
       pwValidate(pwField);
       addUserToDb();
       const id = demoId;
       setDemoId(demoId + 1);
-      props.addToList(id, emailField, isAdminField);
+      props.addToList(id, usernameField, isAdminField);
       closeModal();
     } catch (e) {
       if (typeof e === "string") {
@@ -71,11 +71,11 @@ export default function AddUserModal(props: { addToList: Function }) {
         <div id="popup-container">
           <h3 id="popup-title">Add User</h3>
           <input
-            id="email-input"
+            id="username-input"
             type="text"
-            placeholder="User Email"
-            value={emailField}
-            onChange={(e) => setEmailField(e.target.value)}
+            placeholder="User Username"
+            value={usernameField}
+            onChange={(e) => setUsernameField(e.target.value)}
           />
           <input
             id="password-input"

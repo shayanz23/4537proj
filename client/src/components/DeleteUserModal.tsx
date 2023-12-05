@@ -1,14 +1,13 @@
-
 import Modal from "react-modal";
 import React from "react";
 import { remove } from "firebase/database";
 
 export default function DeleteUserModal(props: {
   userId: string;
-  userEmail: string;
+  userUsername: string;
   removeUser: Function;
 }) {
-  const email = props.userEmail;
+  const username = props.userUsername;
   const [modalIsOpen, setIsOpen] = React.useState(false);
 
   function openModal() {
@@ -44,7 +43,7 @@ export default function DeleteUserModal(props: {
         ariaHideApp={false}
       >
         <div id="popup-container">
-          <h4 id="popup-title">Delete {email}?</h4>
+          <h4 id="popup-title">Delete {username}?</h4>
           <button
             id="cancel-button"
             className="btn btn-primary btn-block btn-large"

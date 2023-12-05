@@ -4,19 +4,19 @@ import { db } from ".././components/firebaseConfig.tsx";
 import { Navigate, useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import "./container.css";
-import { emailValidate, pwValidate } from "../components/Validate.tsx";
+import { pwValidate } from "../components/Validate.tsx";
 
 function SignUp() {
-  const [email, setEmail] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmedPassword, setConfirmedPassword] = useState<string>("");
   const [response, setResponse] = useState<string>("");
   const navigate = useNavigate();
   const cookies = new Cookies();
 
-  function valid(email: string, password: string) {
+  function valid(username: string, password: string) {
     try {
-      emailValidate(email);
+      username;
       pwValidate(password);
     } catch (e) {
       if (typeof e === "string") {
@@ -31,15 +31,18 @@ function SignUp() {
 
   const signUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!valid(email, password)) {
+    if (!valid(username, password)) {
       return;
     }
     try {
-      const q = query(collection(db, "users"), where("email", "==", email));
+      const q = query(
+        collection(db, "users"),
+        where("username", "==", username)
+      );
 
       const querySnapshot = await getDocs(q);
       if (!querySnapshot.empty) {
-        setResponse("Email already used!");
+        setResponse("Username already used!");
         return;
       }
       if (password != confirmedPassword) {
@@ -48,12 +51,12 @@ function SignUp() {
       }
       await addDoc(collection(db, "users"), {
         admin: false,
-        email: email,
+        username: username,
         password,
       });
       cookies.set(
         "user",
-        { admin: false, email: email, password },
+        { admin: false, username: username, password },
         { path: "/" }
       );
       navigate("/dashboard", { replace: true });
@@ -76,11 +79,11 @@ function SignUp() {
           <form onSubmit={signUp}>
             <input
               type="text"
-              name="email"
-              placeholder="Email"
+              name="username"
+              placeholder="Username"
               required={true}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
             <p>{"\n"}</p>
             <input

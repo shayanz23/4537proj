@@ -22,7 +22,7 @@
   grid-row: 1 / span 1;
 }
 
-#email-input {
+#username-input {
   grid-column: 1 / span 2;
   grid-row: 2 / span 1;
   width: 85%;
