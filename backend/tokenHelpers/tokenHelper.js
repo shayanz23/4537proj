@@ -56,4 +56,10 @@ const tokenGenerator = (uid) => {
     return token;
 };
 
-module.exports = { authenticateToken, passwordEncoder, passwordDecoder, tokenGenerator, authenticateTokenAdmin };
+const tokenGeneratorAdmin = (uid) => {
+    const user = { uid };
+    const token = jwt.sign(user, process.env.ADMIN);
+    return token;
+};
+
+module.exports = { authenticateToken, passwordEncoder, passwordDecoder, tokenGenerator, authenticateTokenAdmin, tokenGeneratorAdmin };

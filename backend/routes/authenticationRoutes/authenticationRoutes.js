@@ -2,7 +2,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 const admin = require('firebase-admin');
-const { tokenGenerator, passwordDecoder, passwordEncoder } = require('../../tokenHelpers/tokenHelper');
+const { tokenGenerator, passwordDecoder, passwordEncoder, tokenGeneratorAdmin } = require('../../tokenHelpers/tokenHelper');
 const {updateRequestCount} = require('../helpers/helper')
 
 router.post('/register', async (req, res) => {
@@ -42,8 +42,7 @@ router.post('/login', async (req, res) => {
         await updateRequestCount('/login');
         
         const { username, password } = req.body;
-        console.log(username)
-        console.log(password)
+
 
         const userSnapshot = await admin.firestore().collection('users').where('username', '==', username).get();
 
@@ -53,13 +52,27 @@ router.post('/login', async (req, res) => {
 
         const userDoc = userSnapshot.docs[0];
 
-        const accessToken = tokenGenerator(userDoc.id);
+        
     
         const user = userDoc.data();
+        console.log(user.admin)
+
+        let accessToken;
+
+        if (user.admin === true){
+            accessToken = tokenGeneratorAdmin(userDoc.id);
+        } else {
+            accessToken = tokenGenerator(userDoc.id);
+        }
+
         const decodedPassword = jwt.verify(user.password, process.env.PASSWORD_CODER);
         if (decodedPassword.password !== password) {
-            return res.status(401).json({ error: 'Invalid username or password' });
+            console.log(decodedPassword.password)
+            console.log(password)
+            return res.status(401).json({ error: 'Invalid username or password' });   
         }
+
+
 
         res.cookie('access_token', accessToken, { httpOnly: true });
 
