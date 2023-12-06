@@ -65,6 +65,10 @@ function SignUp() {
       setResponse("Passwords do not match!");
       return;
     }
+    if (username.replace(/ /g,'') === "") {
+      setResponse("Username and password cannot be blank");
+      return;
+    }
     const apiResponse = await register(username, password);
 
     if (apiResponse.error !== undefined) {
