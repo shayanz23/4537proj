@@ -51,7 +51,6 @@ export default function EditUserModal(props: {
       });
 
       const responsejson = await response.json();
-      console.log(responsejson); // Log the raw response text
 
       return responsejson;
     } catch (error) {
@@ -62,12 +61,16 @@ export default function EditUserModal(props: {
 
   async function submit() {
     try {
-      await editUserInDb();
+      const res = await editUserInDb();
+      if (res.error !== undefined) {
+        setSubmitError(res.error);
+        return;
+      }
       props.editUser(props.userId, username, isAdmin);
       closeModal();
     } catch (e) {
       if (typeof e === "string") {
-        setSubmitError(e); // works, `e` narrowed to string
+        setSubmitError(e);
       } else if (e instanceof Error) {
         setSubmitError(e.message);
       }

@@ -13,6 +13,8 @@ function Login() {
   const loginUrl = "http://localhost:3000/API/V1/auth/login";
   const navigate = useNavigate();
 
+  ///Used fetch template from Mozila Docs
+  ///Used fetch template from Mozila Docs
   async function login(url = loginUrl, data = {}) {
     // Default options are marked with *
     const response = await fetch(url, {
@@ -42,7 +44,6 @@ function Login() {
       setResponse(apiResponse.error);
       return;
     } else {
-      console.log(apiResponse.message);
       cookies.set("accessToken", apiResponse.accessToken, { path: "/" });
       if (apiResponse.adminAccessToken !== "") {
         cookies.set("adminAccessToken", apiResponse.adminAccessToken, {
@@ -66,7 +67,6 @@ function Login() {
     } else if (currentUser.status === "Authorized") {
       navigate("/dashboard");
     }
-    console.log(currentUser.status);
   }
 
   checkAuth();

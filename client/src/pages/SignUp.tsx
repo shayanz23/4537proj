@@ -45,7 +45,6 @@ function SignUp() {
       });
 
       const responseText = await response.text();
-      console.log(responseText); // Log the raw response text
 
       const msg = JSON.parse(responseText);
       success = true;
@@ -60,12 +59,12 @@ function SignUp() {
     e.preventDefault();
     if (!valid(username, password)) {
       return;
-    }  
+    }
     if (password !== confirmedPassword) {
       setResponse("Passwords do not match!");
       return;
     }
-    if (username.replace(/ /g,'') === "") {
+    if (username.replace(/ /g, "") === "") {
       setResponse("Username and password cannot be blank");
       return;
     }
@@ -75,7 +74,6 @@ function SignUp() {
       setResponse(apiResponse.error);
       return;
     } else {
-      console.log(apiResponse.message);
       cookies.set("accessToken", apiResponse.accessToken, { path: "/" });
       fetchCalls();
       fetchAdmin();
@@ -92,12 +90,8 @@ function SignUp() {
     } else if (currentUser.status === "Authorized") {
       navigate("/dashboard");
     }
-    console.log(currentUser.status);
   }
-
   checkAuth();
-
-  console.log(cookies.get("user"));
   if (
     cookies.get("user") !== null &&
     cookies.get("user") !== undefined &&

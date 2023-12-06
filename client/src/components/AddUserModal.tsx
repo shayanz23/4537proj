@@ -35,8 +35,6 @@ export default function AddUserModal(props: { addToList: Function }) {
 
   const addUserToDb = async (username: string, password: string, isAdmin: boolean) => {
     try {
-
-      console.log(username, password, isAdmin);
       const response = await fetch(URL + "/admin/addUser", {
         method: "POST",
         headers: {
@@ -63,10 +61,6 @@ export default function AddUserModal(props: { addToList: Function }) {
 
   async function submit() {
     try {
-      console.log("Username:", usernameField);
-      console.log("Password:", pwField);
-      console.log("isAdmin:", isAdminField);
-
       if (usernameField.replace(/ /g,'') === "") {
         setSubmitError("Username cannot be blank");
         return;

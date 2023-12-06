@@ -39,7 +39,6 @@ export default function DeleteUserModal(props: {
       });
 
       const responsejson = await response.json();
-      console.log(responsejson); // Log the raw response text
 
       setSuccess(true);
       return responsejson;

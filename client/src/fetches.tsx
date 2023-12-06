@@ -4,6 +4,10 @@ import apiUrl from "./apiUrl.tsx";
 
 const cookies = new Cookies();
 
+///Used fetch template from Mozila Docs
+///Used fetch template from Mozila Docs
+///Used fetch template from Mozila Docs
+///Used fetch template from Mozila Docs
 async function fetchCalls() {
     // Default options are marked with *
     const response = await fetch(apiUrl + "/userInfo/getCalls", {
@@ -16,14 +20,11 @@ async function fetchCalls() {
       redirect: "follow", // manual, *follow, error
       referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
     });
-    console.log(response.status);
     if (response.status === 401 || response.status === 403) {
       return;
     }
     response.json().then((data) => {
-      console.log(data);
       currentUser.numOfReqs = data.calls;
-      console.log(currentUser.numOfReqs);
     }); // parses JSON response into native JavaScript objects
   }
   async function fetchAdmin() {
@@ -38,14 +39,11 @@ async function fetchCalls() {
       redirect: "follow", // manual, *follow, error
       referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
     });
-    console.log(response.status);
     if (response.status === 401 || response.status === 403) {
       return;
     }
     response.json().then((data) => {
-      console.log(data);
       currentUser.isAdmin = data.adminStatus;
-      console.log(currentUser.isAdmin);
     }); // parses JSON response into native JavaScript objects
   }
 
@@ -61,15 +59,13 @@ async function fetchCalls() {
       redirect: "follow", // manual, *follow, error
       referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
     });
-    console.log(response.status);
+
     if (response.status === 401 || response.status === 403) {
       currentUser.status = "Unauthorized";
       return;
     }
     response.json().then((data) => {
-      console.log(data);
       currentUser.username = data.username;
-      console.log(currentUser.username);
       currentUser.status = "Authorized";
     }); // parses JSON response into native JavaScript objects
   }
