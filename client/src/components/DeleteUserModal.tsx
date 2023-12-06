@@ -10,8 +10,8 @@ export default function DeleteUserModal(props: {
 }) {
   const username = props.userUsername;
   const [modalIsOpen, setIsOpen] = React.useState(false);
-  const cookies = new Cookies;
-  let success = false;
+  const cookies = new Cookies();
+  const [success, setSuccess] = React.useState(false);
 
   function openModal() {
     setIsOpen(true);
@@ -31,27 +31,26 @@ export default function DeleteUserModal(props: {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${cookies.get("adminAccessToken")}`,
         },
         body: JSON.stringify({
           username: username,
-          Authorization: `Bearer ${cookies.get("adminAccessToken")}`,
         }),
       });
 
-      const responseText = await response.text();
-      console.log(responseText); // Log the raw response text
+      const responsejson = await response.json();
+      console.log(responsejson); // Log the raw response text
 
-      const msg = JSON.parse(responseText);
-      success = true;
-      return msg;
+      setSuccess(true);
+      return responsejson;
     } catch (error) {
       console.error("Error deleting user", error);
-      throw error;
+      return error;
     }
   }
   async function submit() {
-    deleteUserFromDb(username);
-    if (success) {
+    const res = await deleteUserFromDb(username);
+    if (res.message === "User deleted successfully") {
       props.removeUser(props.userId);
       closeModal();
     }

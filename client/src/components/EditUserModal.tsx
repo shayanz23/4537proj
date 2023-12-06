@@ -1,7 +1,9 @@
 import "./EditUserModal.css";
 import Modal from "react-modal";
 import React from "react";
-import {} from "./Validate";
+import {pwValidate} from "./Validate";
+import apiUrl from "../apiUrl";
+import Cookies from "universal-cookie";
 
 export default function EditUserModal(props: {
   userId: string;
@@ -13,6 +15,8 @@ export default function EditUserModal(props: {
   const [username, setUsername] = React.useState(props.userUsername);
   const [isAdmin, setIsAdmin] = React.useState(props.userAdmin);
   const [submitError, setSubmitError] = React.useState("");
+  const cookies = new Cookies();
+
   function openModal() {
     setIsOpen(true);
   }
@@ -30,9 +34,33 @@ export default function EditUserModal(props: {
     setIsOpen(false);
   }
 
-  function submit() {
+  async function editUserInDb() {
     try {
-      username;
+      const response = await fetch(apiUrl + `/admin/modifyUser/${props.userId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${cookies.get("adminAccessToken")}`,
+        },
+        body: JSON.stringify({
+          username: username,
+          isAdmin: isAdmin,
+        }),
+      });
+
+      const responsejson = await response.json();
+      console.log(responsejson); // Log the raw response text
+
+      return responsejson;
+    } catch (error) {
+      console.error("Error deleting user", error);
+      return error;
+    }
+  }
+
+  async function submit() {
+    try {
+      await editUserInDb();
       props.editUser(props.userId, username, isAdmin);
       closeModal();
     } catch (e) {

@@ -8,7 +8,6 @@ export default function AddUserModal(props: { addToList: Function }) {
   const [pwField, setPwField] = React.useState("");
   const [isAdminField, setIsAdminField] = React.useState(false);
   const [submitError, setSubmitError] = React.useState("");
-  const [demoId, setDemoId] = React.useState(0);
   const cookies = new Cookies;
 
   const URL = 'http://localhost:3000/API/V1';
@@ -50,11 +49,9 @@ export default function AddUserModal(props: { addToList: Function }) {
         }),
       });
   
-      const responseText = await response.text();
-      console.log(responseText); // Log the raw response text
-      
-      const msg = JSON.parse(responseText);
-      return msg;      
+      const responseJson = await response.json();
+      ;
+      return responseJson;      
     } catch (error) {
       console.error("Error adding user", error);
       throw error;
@@ -70,12 +67,14 @@ export default function AddUserModal(props: { addToList: Function }) {
       console.log("isAdmin:", isAdminField);
 
   
-      await addUserToDb(usernameField, pwField, isAdminField);
-  
-      const id = demoId;
-      setDemoId(demoId + 1);
-      props.addToList(id, usernameField, isAdminField);
-      closeModal();
+      const res = await addUserToDb(usernameField, pwField, isAdminField);
+      if (res.message !== "User added successfully") {
+        throw res.message;
+      } else {
+        props.addToList(res.userId, usernameField, isAdminField);
+        closeModal();
+      }
+      
     } catch (e) {
       if (typeof e === "string") {
         setSubmitError(e);

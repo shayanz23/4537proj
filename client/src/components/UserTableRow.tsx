@@ -1,5 +1,6 @@
 import EditUserModal from "./EditUserModal";
 import DeleteUserModal from "./DeleteUserModal";
+import currentUser from "../currentUser";
 
 export default function UserTableRow(props: {
   userId: string;
@@ -14,28 +15,47 @@ export default function UserTableRow(props: {
   const admin = props.userAdmin;
   const adminString = admin ? "true" : "false";
 
-  return (
-    <tr key={id + "-row"}>
-      <td key={id + "-username"}>{username}</td>
-      <td key={id + "-admin"}>{adminString}</td>
-      <td key={id + "-numOfReqs"}>{props.numOfReqs}</td>
-      <td>
-        <EditUserModal
-          key={id + "-edit"}
-          userId={id}
-          userUsername={username}
-          userAdmin={admin}
-          editUser={props.editUser}
-        />
-      </td>
-      <td>
-        <DeleteUserModal
-          key={id + "-delete"}
-          userId={id}
-          userUsername={username}
-          removeUser={props.removeUser}
-        />
-      </td>
-    </tr>
-  );
+  if (username === currentUser.username) { 
+    return (
+      <tr key={id + "-row"}>
+        <td key={id + "-username"}>{username}</td>
+        <td key={id + "-admin"}>{adminString}</td>
+        <td key={id + "-numOfReqs"}>{props.numOfReqs}</td>
+        <td>
+          
+        </td>
+        <td>
+          <p>Current User</p>
+        </td>
+      </tr>
+    );
+  } else {
+    return (
+      <tr key={id + "-row"}>
+        <td key={id + "-username"}>{username}</td>
+        <td key={id + "-admin"}>{adminString}</td>
+        <td key={id + "-numOfReqs"}>{props.numOfReqs}</td>
+        <td>
+          <EditUserModal
+            key={id + "-edit"}
+            userId={id}
+            userUsername={username}
+            userAdmin={admin}
+            editUser={props.editUser}
+          />
+        </td>
+        <td>
+          <DeleteUserModal
+            key={id + "-delete"}
+            userId={id}
+            userUsername={username}
+            removeUser={props.removeUser}
+          />
+        </td>
+      </tr>
+    );
+  }
+
+
+  
 }

@@ -1,5 +1,4 @@
 type User = {
-  data: any;
   id: string;
   username: string;
   isAdmin: boolean;

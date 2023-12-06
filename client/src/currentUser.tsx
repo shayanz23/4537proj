@@ -1,7 +1,6 @@
 import  User  from './components/User'
 
 const currentUser: User = { 
-    data: undefined,
     id: "",
     username: "",
     isAdmin: false,

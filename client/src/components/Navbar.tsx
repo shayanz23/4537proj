@@ -6,7 +6,7 @@ const cookies = new Cookies();
 
 function NavBar() {
   const navigate = useNavigate();
-  const [navbar, setNavbar] = useState(<></>); // Update initial state to empty JSX fragment
+  const [navbar, setNavbar] = useState(<></>);
 
   const login = () => {
     navigate("/login", { replace: true });
@@ -17,6 +17,7 @@ function NavBar() {
 
   const logout = () => {
     cookies.remove("accessToken");
+    cookies.remove("adminAccessToken");
     currentUser.status = "Unauthorized";
     navigate("/login", { replace: true });
     navigate("/login", { replace: true });
@@ -24,7 +25,6 @@ function NavBar() {
 
   useEffect(() => {
     function checkAuth() {
-      // Your existing checkAuth logic...
 
       if (currentUser.status === "Authorized") {
         setNavbar(
@@ -77,14 +77,12 @@ function NavBar() {
       }
     }
 
-    checkAuth(); // Call checkAuth once on mount
+    checkAuth();
 
-    // Optionally, you can set up an interval to periodically check auth status
     const intervalId = setInterval(checkAuth, 1000);
 
-    // Clean up the interval when the component unmounts
     return () => clearInterval(intervalId);
-  }, []); // Empty dependency array to run the effect only once on mount
+  }, []);
 
   return <>{navbar}</>;
 }

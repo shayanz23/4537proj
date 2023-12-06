@@ -17,14 +17,31 @@ export default function Dashboard() {
   const [numOfReqs, setNumOfReqs] = useState([]);
   const URL = "http://localhost:3000/API/V1";
   const navigate = useNavigate();
+  let success = false;
 
   const getAllUsers = async () => {
+    // try {
+    //   const response = await fetch(URL + "/admin/getAllUsers");
+    //   const users = await response.json();
+    //   return users;
+    // } catch (error) {
+    //   console.error("Error getting users", error);
+    //   throw error;
+    // }
     try {
-      const response = await fetch(URL + "/admin/getAllUsers");
+      const response = await fetch(URL + "/admin/getAllUsers", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${cookies.get("adminAccessToken")}`,
+        },
+      });
+
       const users = await response.json();
+      success = true;
       return users;
     } catch (error) {
-      console.error("Error getting users", error);
+      console.error("Error deleting user", error);
       throw error;
     }
   };
@@ -34,7 +51,12 @@ export default function Dashboard() {
     const fetchUsers = async () => {
       try {
         const users = await getAllUsers();
-        setUserList(users);
+        let userArray = [];
+        for (let i = 0; i < users.length; i++) {
+          const user: User = {username: users[i].data.username, isAdmin: users[i].data.admin, numOfReqs: users[i].data.calls, id: users[i].id, status: ""};
+          userArray.push(user);
+        }
+        setUserList(userArray);
       } catch (error) {
         console.error("Error fetching users", error);
       }
@@ -56,7 +78,6 @@ export default function Dashboard() {
       username: username,
       isAdmin: isAdmin,
       numOfReqs: 0,
-      data: undefined,
       status: ""
     };
     new_array.push(new_user);
@@ -159,9 +180,9 @@ export default function Dashboard() {
             <UserTableRow
               key={user.id}
               userId={user.id}
-              userUsername={user.data.username}
-              userAdmin={user.data.admin}
-              numOfReqs={user.data.calls || 0}
+              userUsername={user.username}
+              userAdmin={user.isAdmin}
+              numOfReqs={user.numOfReqs || 0}
               editUser={editUser}
               removeUser={removeUser}
             />

@@ -55,8 +55,8 @@ router.post('/login', async (req, res) => {
         let adminAccessToken;
 
         if (user.admin === true) {
-            accessToken = tokenGeneratorAdmin(userDoc.id);
-            adminAccessToken = tokenGenerator(userDoc.id);
+            accessToken = tokenGenerator(userDoc.id);
+            adminAccessToken = tokenGeneratorAdmin(userDoc.id);
         } else {
             accessToken = tokenGenerator(userDoc.id);
             adminAccessToken = null;
