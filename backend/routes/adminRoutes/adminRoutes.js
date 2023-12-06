@@ -84,4 +84,41 @@ adminRoutes.get('/getAllEndpoints', authenticateTokenAdmin, async(req,res)=>{
   }
 })
 
-module.exports = adminRoutes, updateRequestCount;
+adminRoutes.put('/modifyUser/:userId', authenticateTokenAdmin, async (req, res) => {
+  try {
+    const { username, isAdmin } = req.body;
+    const userId = req.params.userId;
+
+    const userDocRef = admin.firestore().collection('users').doc(userId);
+    const userDoc = await userDocRef.get();
+
+    if (!userDoc.exists) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    if (username) {
+      const existingUserSnapshot = await admin.firestore().collection('users').where('username', '==', username).get();
+      if (!existingUserSnapshot.empty && existingUserSnapshot.docs[0].id !== userId) {
+        return res.status(400).json({ error: 'Username already exists' });
+      }
+    }
+
+    const updatedData = {};
+    if (username !== undefined) {
+      updatedData.username = username;
+    }
+    if (isAdmin !== undefined) {
+      updatedData.admin = isAdmin;
+    }
+
+    await userDocRef.update(updatedData);
+
+    res.json({ message: 'User modified successfully' });
+  } catch (error) {
+    console.error('Error modifying user', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+module.exports = adminRoutes;
