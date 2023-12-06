@@ -12,7 +12,6 @@ import currentUser from "../currentUser";
 
 export default function Dashboard() {
   const cookies = new Cookies();
-  // console.log(cookies.get("user"));
 
   const [userList, setUserList] = useState<User[]>([]);
   const [numOfReqs, setNumOfReqs] = useState([]);
@@ -23,7 +22,6 @@ export default function Dashboard() {
     try {
       const response = await fetch(URL + "/admin/getAllUsers");
       const users = await response.json();
-      console.log(users);
       return users;
     } catch (error) {
       console.error("Error getting users", error);
@@ -48,14 +46,11 @@ export default function Dashboard() {
 
 
 
-  // Add a new user to the list of users.
   function addToList(id: string, username: string, isAdmin: boolean) {
-    // Create a new array to hold the updated list of users, with the new user added.
     let new_array = [];
     for (let i = 0; i < userList.length; i++) {
       new_array.push(userList[i]);
     }
-    // Add the new user to the new array.
     const new_user: User = {
       id: id,
       username: username,
@@ -68,24 +63,18 @@ export default function Dashboard() {
     setUserList(new_array);
   }
 
-  //Remove the user with the given id from the list of users
   function removeUser(id: string) {
-    // Create a new array to hold the updated list of users, without the User being removed.
     let new_array = [];
     for (let i = 0; i < userList.length; i++) {
       if (userList[i].id !== id) {
         new_array.push(userList[i]);
       }
     }
-    // Update the list of users with the new array.
     setUserList(new_array);
   }
 
-  //Find the user with the given id and update their username and admin status
   function editUser(id: string, username: string, isAdmin: boolean) {
-    // Create a new array to hold the updated list of users.
     let newArray = [];
-    // Find the user with the given id and update their username and admin status.
     for (let i = 0; i < userList.length; i++) {
       if (userList[i].id !== id) {
         newArray.push(userList[i]);
@@ -110,8 +99,6 @@ export default function Dashboard() {
 
   checkAuth();
 
-  // If the user is not logged in, redirect them to the login page.
-  // If the user is logged in but not an admin, redirect them to the dashboard.
   return (
     <div className="container">
       <h1 style={{ width: "100%", marginTop: "10px" }}>Admin Dashboard</h1>

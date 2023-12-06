@@ -68,5 +68,20 @@ adminRoutes.post('/addUser', authenticateTokenAdmin, async (req, res) => {
   }
 });
 
+adminRoutes.get('/getAllEndpoints', authenticateTokenAdmin, async(req,res)=>{
+  try {
+    const endpointsCollection = await admin.firestore().collection('endpoints').get();
+
+    const endpoints = [];
+    endpointsCollection.forEach((doc) => {
+      endpoints.push(doc.data());
+    });
+
+    res.json({ endpoints });
+  } catch (error) {
+    console.error('Error getting endpoints', error);
+    res.status(500).send('Internal Server Error');
+  }
+})
 
 module.exports = adminRoutes, updateRequestCount;
