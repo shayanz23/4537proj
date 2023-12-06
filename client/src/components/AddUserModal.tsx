@@ -1,6 +1,7 @@
 import Modal from "react-modal";
 import React from "react";
 import Cookies from "universal-cookie";
+import { pwValidate } from "./Validate";
 
 export default function AddUserModal(props: { addToList: Function }) {
   const [modalIsOpen, setIsOpen] = React.useState(false);
@@ -66,7 +67,11 @@ export default function AddUserModal(props: { addToList: Function }) {
       console.log("Password:", pwField);
       console.log("isAdmin:", isAdminField);
 
-  
+      if (usernameField.replace(/ /g,'') === "") {
+        setSubmitError("Username cannot be blank");
+        return;
+      }
+      pwValidate(pwField);
       const res = await addUserToDb(usernameField, pwField, isAdminField);
       if (res.message !== "User added successfully") {
         setSubmitError(res.error);
