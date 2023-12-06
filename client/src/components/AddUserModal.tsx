@@ -69,7 +69,7 @@ export default function AddUserModal(props: { addToList: Function }) {
   
       const res = await addUserToDb(usernameField, pwField, isAdminField);
       if (res.message !== "User added successfully") {
-        throw res.message;
+        setSubmitError(res.error);
       } else {
         props.addToList(res.userId, usernameField, isAdminField);
         closeModal();

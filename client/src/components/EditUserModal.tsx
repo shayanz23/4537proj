@@ -31,6 +31,8 @@ export default function EditUserModal(props: {
   }
 
   function closeModal() {
+    setIsAdmin(props.userAdmin);
+    setUsername(props.userUsername);
     setIsOpen(false);
   }
 
