@@ -1,6 +1,7 @@
 import Modal from "react-modal";
 import React from "react";
 import apiUrl from "../apiUrl";
+import Cookies from "universal-cookie";
 
 export default function DeleteUserModal(props: {
   userId: string;
@@ -9,6 +10,7 @@ export default function DeleteUserModal(props: {
 }) {
   const username = props.userUsername;
   const [modalIsOpen, setIsOpen] = React.useState(false);
+  const cookies = new Cookies;
   let success = false;
 
   function openModal() {
@@ -32,6 +34,7 @@ export default function DeleteUserModal(props: {
         },
         body: JSON.stringify({
           username: username,
+          Authorization: `Bearer ${cookies.get("adminAccessToken")}`,
         }),
       });
 
