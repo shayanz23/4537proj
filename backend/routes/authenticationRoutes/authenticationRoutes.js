@@ -38,11 +38,9 @@ router.post('/register', async (req, res) => {
 
 router.post('/login', async (req, res) => {
     try {
-
         await updateRequestCount('/login');
         
         const { username, password } = req.body;
-
 
         const userSnapshot = await admin.firestore().collection('users').where('username', '==', username).get();
 
@@ -51,37 +49,36 @@ router.post('/login', async (req, res) => {
         }
 
         const userDoc = userSnapshot.docs[0];
-
-        
-    
         const user = userDoc.data();
-        console.log(user.admin)
 
         let accessToken;
+        let adminAccessToken;
 
-        if (user.admin === true){
+        if (user.admin === true) {
             accessToken = tokenGeneratorAdmin(userDoc.id);
+            adminAccessToken = tokenGenerator(userDoc.id);
         } else {
             accessToken = tokenGenerator(userDoc.id);
+            adminAccessToken = null;
         }
 
         const decodedPassword = jwt.verify(user.password, process.env.PASSWORD_CODER);
         if (decodedPassword.password !== password) {
-            console.log(decodedPassword.password)
-            console.log(password)
             return res.status(401).json({ error: 'Invalid username or password' });   
         }
 
-
-
         res.cookie('access_token', accessToken, { httpOnly: true });
+        if (adminAccessToken) {
+            res.cookie('admin_access_token', adminAccessToken, { httpOnly: true });
+        }
 
-        res.json({ message: 'Logged in', accessToken, calls: user.calls });
+        res.json({ message: 'Logged in', accessToken, adminAccessToken, calls: user.calls });
     } catch (error) {
         console.error('Authentication error', error);
         res.status(500).send('Internal Server Error');
     }
 });
+
 
 module.exports = router;
 
