@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const { authenticateToken, authenticateTokenAdmin, passwordEncoder } = require('../../tokenHelpers/tokenHelper');
 const {updateRequestCount} = require("../helpers/helper")
 
-adminRoutes.get('/getAllUsers', async (req, res) => {
+adminRoutes.get('/getAllUsers',authenticateTokenAdmin ,async (req, res) => {
   try {
     await updateRequestCount('getAllUsers');
 

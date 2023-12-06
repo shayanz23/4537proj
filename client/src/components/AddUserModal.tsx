@@ -41,7 +41,7 @@ export default function AddUserModal(props: { addToList: Function }) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.get("accessToken")}`,
+          Authorization: `Bearer ${cookies.get("adminAccessToken")}`,
         },
         body: JSON.stringify({
           username: username,
