@@ -17,19 +17,19 @@ const app = express();
 const port = process.env.PORT || 3000;
 const clientHostname = "http://localhost:5173";
 
-var whitelist = [clientHostname, /** other domains if any */ ]
-var corsOptions = {
-  credentials: true,
-  origin: function(origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  }
-}
+// var whitelist = [clientHostname, /** other domains if any */ ]
+// var corsOptions = {
+//   credentials: true,
+//   origin: function(origin, callback) {
+//     if (whitelist.indexOf(origin) !== -1) {
+//       callback(null, true)
+//     } else {
+//       callback(new Error('Not allowed by CORS'))
+//     }
+//   }
+// }
 
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 app.use((req, res, next) => {
