@@ -12,7 +12,7 @@ export default function AddUserModal(props: { addToList: Function }) {
   const cookies = new Cookies;
 
   const URL = 'http://localhost:3000/API/V1';
-
+  
   function handleAdminChange() {
     setIsAdminField(!isAdminField);
   }
@@ -36,7 +36,7 @@ export default function AddUserModal(props: { addToList: Function }) {
   const addUserToDb = async (username: string, password: string, isAdmin: boolean) => {
     try {
 
-      console.log(username, password, isAdmin)
+      console.log(username, password, isAdmin);
       const response = await fetch(URL + "/admin/addUser", {
         method: "POST",
         headers: {
