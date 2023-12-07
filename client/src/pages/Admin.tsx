@@ -9,12 +9,13 @@ import "../components/EditUserModal.css";
 import { useEffect } from "react";
 import currentUser from "../currentUser";
 
-
 export default function Dashboard() {
   const cookies = new Cookies();
 
   const [userList, setUserList] = useState<User[]>([]);
-  const [endpointList, setEndpointList] = useState<{calls: number, endpointRoute: string, method: string}[]>([]);
+  const [endpointList, setEndpointList] = useState<
+    { calls: number; endpointRoute: string; method: string }[]
+  >([]);
   const URL = "http://localhost:3000/API/V1";
   const navigate = useNavigate();
   let success = false;
@@ -44,7 +45,13 @@ export default function Dashboard() {
         const users = await getAllUsers();
         let userArray = [];
         for (let i = 0; i < users.length; i++) {
-          const user: User = {username: users[i].data.username, isAdmin: users[i].data.admin, numOfReqs: users[i].data.calls, id: users[i].id, status: ""};
+          const user: User = {
+            username: users[i].data.username,
+            isAdmin: users[i].data.admin,
+            numOfReqs: users[i].data.calls,
+            id: users[i].id,
+            status: "",
+          };
           userArray.push(user);
         }
         setUserList(userArray);
@@ -75,13 +82,11 @@ export default function Dashboard() {
     }
   };
 
-  
-
   useEffect(() => {
     const fetchEndpoints = async () => {
       try {
         const users = await getAllEndpoints();
-        
+
         setEndpointList(users);
       } catch (error) {
         console.error("Error fetching users", error);
@@ -101,7 +106,7 @@ export default function Dashboard() {
       username: username,
       isAdmin: isAdmin,
       numOfReqs: 0,
-      status: ""
+      status: "",
     };
     new_array.push(new_user);
     setUserList(new_array);

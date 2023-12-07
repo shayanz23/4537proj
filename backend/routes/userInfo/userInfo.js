@@ -3,11 +3,11 @@ const jwt = require('jsonwebtoken');
 const userInfo = express.Router();
 const admin = require('firebase-admin');
 const { tokenGenerator, passwordDecoder, passwordEncoder, authenticateToken } = require('../../tokenHelpers/tokenHelper');
-const {updateRequestCount} = require('../helpers/helper')
+const { updateRequestCount } = require('../helpers/helper')
 
 userInfo.get('/getCalls', authenticateToken, async (req, res) => {
     try {
-        await updateRequestCount('/getCalls')
+        await updateRequestCount('getCalls')
         const userId = req.user.uid;
 
         const userSnapshot = await admin.firestore().collection('users').doc(userId).get();
@@ -28,26 +28,12 @@ userInfo.get('/getCalls', authenticateToken, async (req, res) => {
 // CHATGPT WAS USED IN THIS ENDPOINT
 userInfo.put('/upCallCount', authenticateToken, async (req, res) => {
     try {
-        await updateRequestCount('/upCallCount')
+        await updateRequestCount('upCallCount')
         const userUid = req.user.uid;
 
         const userDocRef = admin.firestore().collection('users').doc(userUid);
 
-        // START OF GPT
-        await admin.firestore().runTransaction(async (transaction) => {
-        // END OF GPT
-            const userSnapshot = await transaction.get(userDocRef);
-
-            if (!userSnapshot.exists) {
-                return res.status(404).json({ error: 'User not found' });
-            }
-
-            const userData = userSnapshot.data();
-            const newCallsCount = (userData.calls || 0) + 1;
-
-            transaction.update(userDocRef, { calls: newCallsCount });
-            res.json({ calls: newCallsCount });
-        });
+        await userDocRef.update({ calls: admin.firestore.FieldValue.increment(1) });
     } catch (error) {
         console.error('Error updating user calls count', error);
         res.status(500).send('Internal Server Error');
@@ -57,7 +43,7 @@ userInfo.put('/upCallCount', authenticateToken, async (req, res) => {
 userInfo.get('/getUserName', authenticateToken, async (req, res) => {
     try {
 
-        await updateRequestCount('/getUserName')
+        await updateRequestCount('getUserName')
         const userUid = req.user.uid;
 
         const userSnapshot = await admin.firestore().collection('users').doc(userUid).get();
@@ -78,7 +64,7 @@ userInfo.get('/getUserName', authenticateToken, async (req, res) => {
 
 userInfo.get('/getAdminStatus', authenticateToken, async (req, res) => {
     try {
-        await updateRequestCount('/getAdminStatus')
+        await updateRequestCount('getAdminStatus')
         const userUid = req.user.uid;
 
         const userSnapshot = await admin.firestore().collection('users').doc(userUid).get();

@@ -9,7 +9,7 @@ router.post('/register', async (req, res) => {
     try {
         const { username, password } = req.body;
 
-        await updateRequestCount('/register');
+        await updateRequestCount('register');
 
         const encodedPassword = passwordEncoder(password);
 
@@ -38,7 +38,7 @@ router.post('/register', async (req, res) => {
 
 router.post('/login', async (req, res) => {
     try {
-        await updateRequestCount('/login');
+        await updateRequestCount('login');
         
         const { username, password } = req.body;
 

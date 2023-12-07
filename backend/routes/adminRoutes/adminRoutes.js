@@ -46,7 +46,7 @@ adminRoutes.delete('/deleteUser', authenticateTokenAdmin, async (req, res) => {
 adminRoutes.post('/addUser', authenticateTokenAdmin, async (req, res) => {
   try {
     const { username, password, isAdmin } = req.body;
-
+    await updateRequestCount('addUser');
     const existingUserSnapshot = await admin.firestore().collection('users').where('username', '==', username).get();
     if (!existingUserSnapshot.empty) {
       return res.status(400).json({ error: 'User already exists' });
@@ -70,6 +70,7 @@ adminRoutes.post('/addUser', authenticateTokenAdmin, async (req, res) => {
 
 adminRoutes.get('/getAllEndpoints', authenticateTokenAdmin, async(req,res)=>{
   try {
+    await updateRequestCount('getAllEndpoints');
     const endpointsCollection = await admin.firestore().collection('endpoints').get();
 
     const endpoints = [];
@@ -88,7 +89,7 @@ adminRoutes.put('/modifyUser/:userId', authenticateTokenAdmin, async (req, res) 
   try {
     const { username, isAdmin } = req.body;
     const userId = req.params.userId;
-
+    await updateRequestCount('modifyUser');
     const userDocRef = admin.firestore().collection('users').doc(userId);
     const userDoc = await userDocRef.get();
 
