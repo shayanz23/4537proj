@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import Cookies from "universal-cookie";
 import UserTableRow from "../components/UserTableRow";
 import AddUserModal from "../components/AddUserModal";
@@ -13,11 +12,10 @@ export default function Dashboard() {
   const cookies = new Cookies();
   const [strings, setStrings] = useState<any | null>(null);
 
-  useEffect(() => {
     useEffect(() => {
       const fetchStrings = async () => {
         try {
-          const response = await fetch('/strings.json'); // Adjust the path if needed
+          const response = await fetch('../strings.json'); // Adjust the path if needed
           const data = await response.json();
           setStrings(data);
         } catch (error) {
@@ -170,9 +168,9 @@ export default function Dashboard() {
       <table style={{ width: "100%", marginTop: "10px" }}>
         <thead>
           <tr>
-            <th>{strings.method}</th>
-            <th>{strings.endpoint}</th>
-            <th>{strings.calls}</th>
+            <th>{strings ? strings.method : 'Loading...'}</th>
+            <th>{strings ? strings.endpoint : 'Loading...'}</th>
+            <th>{strings ? strings.calls : 'Loading...'}</th>
           </tr>
         </thead>
         <tbody>
@@ -189,11 +187,11 @@ export default function Dashboard() {
         {/* Table for User Details */}
         <thead>
           <tr>
-            <th>{strings.userU}</th>
-            <th>{strings.admin?}</th>
-            <th>{strings.numOfReqs}</th>
-            <th>{strings.edit}</th>
-            <th>{strings.delete}</th>
+            <th>{strings ? strings.userU : 'Loading...'}</th>
+            <th>{strings ? strings.adminM : 'Loading...'}</th>
+            <th>{strings ? strings.numOfReqs : 'Loading...'}</th>
+            <th>{strings ? strings.edit : 'Loading...'}</th>
+            <th>{strings ? strings.delete : 'Loading...'}</th>
           </tr>
         </thead>
         <tbody>
@@ -211,7 +209,7 @@ export default function Dashboard() {
         </tbody>
       </table>
       <AddUserModal addToList={addToUserList} />
-      <p>{strings.warning}</p>
+      <p>{strings ? strings.warning : 'Loading...'}</p>
     </div>
   );
 }

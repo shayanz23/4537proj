@@ -13,7 +13,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchStrings = async () => {
       try {
-        const response = await fetch('/strings.json'); // Adjust the path if needed
+        const response = await fetch('../strings.json'); // Adjust the path if needed
         const data = await response.json();
         setStrings(data);
       } catch (error) {
@@ -43,13 +43,13 @@ export default function Dashboard() {
     if (calls > 20) {
       <p>{strings.warning}</p>};
     }
-  });
+  );
 
   return (
     <div className="container">
-      <h1>{strings.dashboard}</h1>
-      <p>{strings.yourReqs} {calls}</p>
-      <p>{strings.warning}</p>
+      <h1>{strings ? strings.dashboard : 'Loading...'}</h1>
+      <p>{strings ? strings.yourReqs : 'Loading...'} {calls}</p>
+      <p>{strings ? strings.warning : 'Loading...'}</p>
     </div>
   );
 }

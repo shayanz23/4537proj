@@ -19,7 +19,7 @@ function SignUp() {
   useEffect(() => {
     const fetchStrings = async () => {
       try {
-        const response = await fetch('/strings.json'); // Adjust the path if needed
+        const response = await fetch('../strings.json'); // Adjust the path if needed
         const data = await response.json();
         setStrings(data);
       } catch (error) {
@@ -120,7 +120,7 @@ function SignUp() {
     return (
       <div className="container form-container">
         <div className="sign-up">
-          <h1>{strings.signup}</h1>
+          <h1>{strings ? strings.signup : 'Loading...'}</h1>
           <form onSubmit={signUp}>
             <input
               type="text"
@@ -153,7 +153,7 @@ function SignUp() {
               type="submit"
               className="btn btn-primary btn-block btn-large"
             >
-              {strings.signup}
+              {strings ? strings.signup : 'Loading...'}
             </button>
             <p>{response}</p>
           </form>

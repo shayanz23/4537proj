@@ -20,7 +20,7 @@ function Ask() {
   useEffect(() => {
     const fetchStrings = async () => {
       try {
-        const response = await fetch('/strings.json'); // Adjust the path if needed
+        const response = await fetch('../strings.json'); // Adjust the path if needed
         const data = await response.json();
         setStrings(data);
       } catch (error) {
@@ -117,7 +117,7 @@ function Ask() {
           onChange={(e) => setQuestion(e.target.value)}
         />
         <button type="submit" className="btn btn-primary btn-block btn-large">
-          {strings.submit}
+          {strings ? strings.submit : 'Loading...'}
         </button>
       </form>
     </div>

@@ -8,7 +8,7 @@ export default function NotFound() {
   useEffect(() => {
     const fetchStrings = async () => {
       try {
-        const response = await fetch('/strings.json'); // Adjust the path if needed
+        const response = await fetch('../strings.json'); // Adjust the path if needed
         const data = await response.json();
         setStrings(data);
       } catch (error) {
@@ -20,7 +20,7 @@ export default function NotFound() {
   }, []);
   return (
     <div className="container">
-      <h1>{strings.notFound}</h1>
+      <h1>{strings ? strings.notFound : 'Loading...'}</h1>
     </div>
   );
 }

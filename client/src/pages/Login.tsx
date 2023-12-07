@@ -18,7 +18,7 @@ function Login() {
   useEffect(() => {
     const fetchStrings = async () => {
       try {
-        const response = await fetch('/strings.json'); // Adjust the path if needed
+        const response = await fetch('../strings.json'); // Adjust the path if needed
         const data = await response.json();
         setStrings(data);
       } catch (error) {
@@ -103,7 +103,7 @@ function Login() {
     return (
       <div className="container form-container">
         <div className="login">
-          <h1>{strings.login}</h1>
+          <h1>{strings ? strings.login : 'Loading...'}</h1>
           <form onSubmit={LoginInEventHandler}>
             <input
               type="text"
@@ -127,7 +127,7 @@ function Login() {
               type="submit"
               className="btn btn-primary btn-block btn-large"
             >
-              {strings.login}
+              {strings ? strings.login : 'Loading...'}
             </button>
           </form>
           <p>{response}</p>
