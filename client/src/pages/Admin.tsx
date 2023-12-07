@@ -164,7 +164,7 @@ export default function Dashboard() {
 
   return (
     <div className="container">
-      <h1 style={{ width: "100%", marginTop: "10px" }}>{strings.aDash}</h1>
+      <h1 style={{ width: "100%", marginTop: "10px" }}>{strings ? strings.aDash: 'Loading...'}</h1>
       <table style={{ width: "100%", marginTop: "10px" }}>
         <thead>
           <tr>
