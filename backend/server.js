@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
+const expressOasGenerator = require('express-oas-generator');
 
 const serviceAccount = require('./firebase/credentials.json');
 const adminRoutes = require('../backend/routes/adminRoutes/adminRoutes');
@@ -14,20 +15,8 @@ admin.initializeApp({
 });
 
 const app = express();
-const port = process.env.PORT || 3000;
-const clientHostname = "http://localhost:5173";
-
-// var whitelist = [clientHostname, /** other domains if any */ ]
-// var corsOptions = {
-//   credentials: true,
-//   origin: function(origin, callback) {
-//     if (whitelist.indexOf(origin) !== -1) {
-//       callback(null, true)
-//     } else {
-//       callback(new Error('Not allowed by CORS'))
-//     }
-//   }
-// }
+expressOasGenerator.handleResponses(app, {});
+const port = 3000;
 
 app.use(cors());
 app.use(express.json());
@@ -43,6 +32,7 @@ app.use('/API/V1/admin', adminRoutes);
 app.use('/API/V1/auth', authRoutes);
 app.use('/API/V1/userInfo', userInfo);
 
+expressOasGenerator.handleRequests();
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });

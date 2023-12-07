@@ -5,6 +5,7 @@ const admin = require('firebase-admin');
 const { tokenGenerator, passwordDecoder, passwordEncoder, authenticateToken } = require('../../tokenHelpers/tokenHelper');
 const { updateRequestCount } = require('../helpers/helper')
 
+
 userInfo.get('/getCalls', authenticateToken, async (req, res) => {
     try {
         await updateRequestCount('getCalls')
