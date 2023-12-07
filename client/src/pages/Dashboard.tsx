@@ -13,11 +13,11 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchStrings = async () => {
       try {
-        const response = await fetch('../strings.json'); // Adjust the path if needed
+        const response = await fetch("../strings.json"); // Adjust the path if needed
         const data = await response.json();
         setStrings(data);
       } catch (error) {
-        console.error('Error fetching strings:', error);
+        console.error("Error fetching strings:", error);
       }
     };
 
@@ -41,15 +41,17 @@ export default function Dashboard() {
   useEffect(() => {
     checkAuth();
     if (calls > 20) {
-      <p>{strings.warning}</p>};
+      setApiCountWarning(strings.warning);
     }
-  );
+  });
 
   return (
     <div className="container">
-      <h1>{strings ? strings.dashboard : 'Loading...'}</h1>
-      <p>{strings ? strings.yourReqs : 'Loading...'} {calls}</p>
-      <p>{strings ? strings.warning : 'Loading...'}</p>
+      <h1>{strings ? strings.dashboard : "Loading..."}</h1>
+      <p>
+        {strings ? strings.yourReqs : "Loading..."} {calls}
+      </p>
+      <p>{apiCountWarning}</p>
     </div>
   );
 }

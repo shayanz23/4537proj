@@ -158,7 +158,7 @@ export default function Dashboard() {
   useEffect(() => {
     checkAuth();
     if (currentUser.numOfReqs > 20) {
-      setApiCountWarning("Warning: You have passed your API call limit.");
+      setApiCountWarning(strings ? strings.warning : 'Loading...');
     }
   });
 
@@ -209,7 +209,7 @@ export default function Dashboard() {
         </tbody>
       </table>
       <AddUserModal addToList={addToUserList} />
-      <p>{strings ? strings.warning : 'Loading...'}</p>
+      <p>{apiCountWarning}</p>
     </div>
   );
 }
