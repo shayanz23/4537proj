@@ -1,4 +1,4 @@
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Cookies from "universal-cookie";
 import UserTableRow from "../components/UserTableRow";
@@ -19,6 +19,7 @@ export default function Dashboard() {
   const URL = "http://localhost:3000/API/V1";
   const navigate = useNavigate();
   let success = false;
+  const [apiCountWarning, setApiCountWarning] = useState<string>("");
 
   const getAllUsers = async () => {
     try {
@@ -136,17 +137,25 @@ export default function Dashboard() {
     setUserList(newArray);
   }
 
-  function checkAuth() {
+
+  async function checkAuth() {
     if (currentUser.status === "") {
-      setTimeout(checkAuth, 1000);
+      setTimeout(checkAuth, 250);
     } else if (currentUser.status === "Authorized" && !currentUser.isAdmin) {
       navigate("/dashboard");
     } else if (currentUser.status === "Unauthorized") {
       navigate("/login");
+    } else {
+
     }
   }
 
-  checkAuth();
+  useEffect(() => {
+    checkAuth();
+    if (currentUser.numOfReqs > 20) {
+      setApiCountWarning("You have passed your API call limit.")
+    }
+  });
 
   return (
     <div className="container">
@@ -195,6 +204,7 @@ export default function Dashboard() {
         </tbody>
       </table>
       <AddUserModal addToList={addToUserList} />
+      <p>{apiCountWarning}</p>
     </div>
   );
 }

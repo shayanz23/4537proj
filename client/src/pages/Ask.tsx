@@ -1,6 +1,6 @@
 import Cookies from "universal-cookie";
-import { Navigate, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import "./container.css";
 import currentUser from "../currentUser";
 import "./container.css";
@@ -73,15 +73,17 @@ function Ask() {
 
   const navigate = useNavigate();
 
-  function checkAuth() {
+  async function checkAuth() {
     if (currentUser.status === "") {
-      setTimeout(checkAuth, 1000);
+      setTimeout(checkAuth, 250);
     } else if (currentUser.status === "Unauthorized") {
       navigate("/login");
     }
   }
 
-  checkAuth();
+  useEffect(() => {
+    checkAuth();
+  });
 
   return (
     <div className="container">

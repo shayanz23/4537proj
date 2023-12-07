@@ -79,7 +79,7 @@ function NavBar() {
 
     checkAuth();
 
-    const intervalId = setInterval(checkAuth, 1000);
+    const intervalId = setInterval(checkAuth, 250);
 
     return () => clearInterval(intervalId);
   }, []);

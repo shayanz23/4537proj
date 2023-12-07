@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import "./container.css";
@@ -75,23 +75,27 @@ function SignUp() {
       return;
     } else {
       cookies.set("accessToken", apiResponse.accessToken, { path: "/" });
-      fetchCalls();
-      fetchAdmin();
-      fetchUsername();
-      setTimeout(checkAuth, 2000);
+      await fetchCalls();
+      await fetchAdmin();
+      await fetchUsername();
+      await setTimeout(checkAuth, 250);
     }
   };
 
-  function checkAuth() {
+  async function checkAuth() {
     if (currentUser.status === "") {
-      setTimeout(checkAuth, 1000);
+      setTimeout(checkAuth, 250);
     } else if (currentUser.status === "Authorized" && currentUser.isAdmin) {
       navigate("/admin");
     } else if (currentUser.status === "Authorized") {
       navigate("/dashboard");
     }
   }
-  checkAuth();
+  
+  useEffect(() => {
+    checkAuth();
+  });
+
   if (
     cookies.get("user") !== null &&
     cookies.get("user") !== undefined &&
