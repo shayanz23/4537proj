@@ -35,7 +35,6 @@ function Ask() {
 
       return responsejson;
     } catch (error) {
-      console.error("Error deleting user", error);
       return error;
     }
   }

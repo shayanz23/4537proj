@@ -54,7 +54,6 @@ export default function EditUserModal(props: {
 
       return responsejson;
     } catch (error) {
-      console.error("Error deleting user", error);
       return error;
     }
   }

@@ -43,7 +43,6 @@ export default function DeleteUserModal(props: {
       setSuccess(true);
       return responsejson;
     } catch (error) {
-      console.error("Error deleting user", error);
       return error;
     }
   }

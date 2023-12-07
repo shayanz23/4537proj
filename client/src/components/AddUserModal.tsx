@@ -52,7 +52,6 @@ export default function AddUserModal(props: { addToList: Function }) {
       ;
       return responseJson;      
     } catch (error) {
-      console.error("Error adding user", error);
       throw error;
     }
   };

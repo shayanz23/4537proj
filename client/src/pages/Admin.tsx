@@ -35,7 +35,6 @@ export default function Dashboard() {
       success = true;
       return users;
     } catch (error) {
-      console.error("Error deleting user", error);
       throw error;
     }
   };
@@ -57,7 +56,6 @@ export default function Dashboard() {
         }
         setUserList(userArray);
       } catch (error) {
-        console.error("Error fetching users", error);
       }
     };
 
@@ -78,7 +76,6 @@ export default function Dashboard() {
       success = true;
       return res.endpoints;
     } catch (error) {
-      console.error("Error deleting user", error);
       throw error;
     }
   };
@@ -90,7 +87,6 @@ export default function Dashboard() {
 
         setEndpointList(users);
       } catch (error) {
-        console.error("Error fetching users", error);
       }
     };
 

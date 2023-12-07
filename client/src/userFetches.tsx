@@ -25,8 +25,6 @@ async function fetchCalls() {
   }
   response.json().then((data) => {
     currentUser.numOfReqs = data.calls;
-    console.log(currentUser.numOfReqs);
-    console.log(data.calls);
   }); // parses JSON response into native JavaScript objects
 }
 async function fetchAdmin() {

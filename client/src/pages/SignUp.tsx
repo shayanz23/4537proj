@@ -50,7 +50,6 @@ function SignUp() {
       success = true;
       return msg;
     } catch (error) {
-      console.error("Error deleting user", error);
       throw error;
     }
   }
