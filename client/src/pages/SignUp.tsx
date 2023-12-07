@@ -5,7 +5,7 @@ import "./container.css";
 import { pwValidate } from "../components/Validate.tsx";
 import currentUser from "../currentUser";
 import apiUrl from "../apiUrl.tsx";
-import { fetchCalls, fetchAdmin, fetchUsername } from "../fetches.tsx";
+import { fetchCalls, fetchAdmin, fetchUsername } from "../userFetches.tsx";
 
 function SignUp() {
   const [username, setUsername] = useState<string>("");

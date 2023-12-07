@@ -3,7 +3,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import "./container.css";
 import currentUser from "../currentUser";
-import { fetchCalls, fetchAdmin, fetchUsername } from "../fetches.tsx";
+import { fetchCalls, fetchAdmin, fetchUsername } from "../userFetches.tsx";
 
 function Login() {
   const [username, setUsername] = useState<string>("");
@@ -55,8 +55,6 @@ function Login() {
       fetchUsername();
       await setTimeout(checkAuth, 2000);
     }
-
-    
   };
 
   function checkAuth() {

@@ -5,6 +5,7 @@ import "./container.css";
 import currentUser from "../currentUser";
 import "./container.css";
 import "../components/EditUserModal.css";
+import apiUrl from "../apiUrl";
 
 type Message = {
   text: string;
@@ -20,11 +21,30 @@ function Ask() {
     setMessages([...messages, newMessage]);
   };
 
+  async function upCallCount() {
+    try {
+      const response = await fetch(apiUrl + `/userInfo/upCallCount/`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${cookies.get("accessToken")}`,
+        },
+      });
+
+      const responsejson = await response.json();
+
+      return responsejson;
+    } catch (error) {
+      console.error("Error deleting user", error);
+      return error;
+    }
+  }
+
   const QuestionEventHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const userMessage: Message = { text: question, sender: "user" };
     addMessage(question, "user");
-
+    upCallCount();
     const response = await fetch(
       "https://api-inference.huggingface.co/models/facebook/blenderbot-400M-distill",
       {

@@ -4,16 +4,13 @@ import Footer from "./components/Footer.tsx";
 import Cookies from "universal-cookie";
 import "./App.css";
 import "./pages/container.css";
-import { fetchCalls, fetchAdmin, fetchUsername } from "./fetches.tsx";
+import { fetchCalls, fetchAdmin, fetchUsername } from "./userFetches.tsx";
 import { useEffect, useState } from "react";
-
 
 const cookies = new Cookies();
 
 function App() {
   useEffect(() => {
-    
-
     fetchCalls();
     fetchAdmin();
     fetchUsername();

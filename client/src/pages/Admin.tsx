@@ -14,20 +14,12 @@ export default function Dashboard() {
   const cookies = new Cookies();
 
   const [userList, setUserList] = useState<User[]>([]);
-  const [numOfReqs, setNumOfReqs] = useState([]);
+  const [endpointList, setEndpointList] = useState<{calls: number, endpointRoute: string, method: string}[]>([]);
   const URL = "http://localhost:3000/API/V1";
   const navigate = useNavigate();
   let success = false;
 
   const getAllUsers = async () => {
-    // try {
-    //   const response = await fetch(URL + "/admin/getAllUsers");
-    //   const users = await response.json();
-    //   return users;
-    // } catch (error) {
-    //   console.error("Error getting users", error);
-    //   throw error;
-    // }
     try {
       const response = await fetch(URL + "/admin/getAllUsers", {
         method: "GET",
@@ -46,7 +38,6 @@ export default function Dashboard() {
     }
   };
 
-  
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -65,10 +56,42 @@ export default function Dashboard() {
     fetchUsers();
   }, []);
 
+  const getAllEndpoints = async () => {
+    try {
+      const response = await fetch(URL + "/admin/getAllEndpoints", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${cookies.get("adminAccessToken")}`,
+        },
+      });
 
+      const res = await response.json();
+      success = true;
+      return res.endpoints;
+    } catch (error) {
+      console.error("Error deleting user", error);
+      throw error;
+    }
+  };
 
+  
 
-  function addToList(id: string, username: string, isAdmin: boolean) {
+  useEffect(() => {
+    const fetchEndpoints = async () => {
+      try {
+        const users = await getAllEndpoints();
+        
+        setEndpointList(users);
+      } catch (error) {
+        console.error("Error fetching users", error);
+      }
+    };
+
+    fetchEndpoints();
+  }, []);
+
+  function addToUserList(id: string, username: string, isAdmin: boolean) {
     let new_array = [];
     for (let i = 0; i < userList.length; i++) {
       new_array.push(userList[i]);
@@ -128,40 +151,17 @@ export default function Dashboard() {
           <tr>
             <th>Method</th>
             <th>Endpoint</th>
-            <th>Requests</th>
+            <th>Calls</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>POST</td>
-            <td>/API/V1/auth/register</td>
-            <td>0</td>
-          </tr>
-          <tr>
-            <td>POST</td>
-            <td>/API/V1/auth/login</td>
-            <td>0</td>
-          </tr>
-          <tr>
-            <td>GET</td>
-            <td>/API/V1/userInfo/getUserName</td>
-            <td>0</td>
-          </tr>
-          <tr>
-            <td>GET</td>
-            <td>/API/V1/userInfo/getCalls</td>
-            <td>0</td>
-          </tr>
-          <tr>
-            <td>GET</td>
-            <td>/API/V1/admin/getAllUsers</td>
-            <td>0</td>
-          </tr>
-          <tr>
-            <td>DELETE</td>
-            <td>/API/V1/admin/deleteUser</td>
-            <td>0</td>
-          </tr>
+          {endpointList.map((endpoint) => (
+            <tr key={endpoint.endpointRoute}>
+              <td>{endpoint.method}</td>
+              <td>{endpoint.endpointRoute}</td>
+              <td>{endpoint.calls}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
       <table style={{ width: "100%", marginTop: "10px" }}>
@@ -189,7 +189,7 @@ export default function Dashboard() {
           ))}
         </tbody>
       </table>
-      <AddUserModal addToList={addToList} />
+      <AddUserModal addToList={addToUserList} />
     </div>
   );
 }
