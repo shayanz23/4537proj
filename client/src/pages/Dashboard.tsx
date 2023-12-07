@@ -8,7 +8,21 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [calls, setCalls] = useState<number>(0);
   const [apiCountWarning, setApiCountWarning] = useState<string>("");
+  const [strings, setStrings] = useState<any | null>(null); // Using 'any' for flexibility
 
+  useEffect(() => {
+    const fetchStrings = async () => {
+      try {
+        const response = await fetch('/strings.json'); // Adjust the path if needed
+        const data = await response.json();
+        setStrings(data);
+      } catch (error) {
+        console.error('Error fetching strings:', error);
+      }
+    };
+
+    fetchStrings();
+  }, []);
   function setCalls2() {
     setCalls(currentUser.numOfReqs);
   }
@@ -27,15 +41,15 @@ export default function Dashboard() {
   useEffect(() => {
     checkAuth();
     if (calls > 20) {
-      setApiCountWarning("Warning: You have passed your API call limit.");
+      <p>{strings.warning}</p>};
     }
   });
 
   return (
     <div className="container">
-      <h1>Dashboard</h1>
-      <p>Your total number of requests: {calls}</p>
-      <p>{apiCountWarning}</p>
+      <h1>{strings.dashboard}</h1>
+      <p>{strings.yourReqs} {calls}</p>
+      <p>{strings.warning}</p>
     </div>
   );
 }

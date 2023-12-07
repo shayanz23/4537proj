@@ -6,12 +6,27 @@ import AddUserModal from "../components/AddUserModal";
 import "./container.css";
 import User from "../components/User";
 import "../components/EditUserModal.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import currentUser from "../currentUser";
 
 export default function Dashboard() {
   const cookies = new Cookies();
+  const [strings, setStrings] = useState<any | null>(null);
 
+  useEffect(() => {
+    useEffect(() => {
+      const fetchStrings = async () => {
+        try {
+          const response = await fetch('/strings.json'); // Adjust the path if needed
+          const data = await response.json();
+          setStrings(data);
+        } catch (error) {
+          console.error('Error fetching strings:', error);
+        }
+      };
+  
+      fetchStrings();
+    }, []);
   const [userList, setUserList] = useState<User[]>([]);
   const [endpointList, setEndpointList] = useState<
     { calls: number; endpointRoute: string; method: string }[]
@@ -151,13 +166,13 @@ export default function Dashboard() {
 
   return (
     <div className="container">
-      <h1 style={{ width: "100%", marginTop: "10px" }}>Admin Dashboard</h1>
+      <h1 style={{ width: "100%", marginTop: "10px" }}>{strings.aDash}</h1>
       <table style={{ width: "100%", marginTop: "10px" }}>
         <thead>
           <tr>
-            <th>Method</th>
-            <th>Endpoint</th>
-            <th>Calls</th>
+            <th>{strings.method}</th>
+            <th>{strings.endpoint}</th>
+            <th>{strings.calls}</th>
           </tr>
         </thead>
         <tbody>
@@ -174,11 +189,11 @@ export default function Dashboard() {
         {/* Table for User Details */}
         <thead>
           <tr>
-            <th>User username</th>
-            <th>Admin?</th>
-            <th>Number Of Requests</th>
-            <th>Edit</th>
-            <th>Delete</th>
+            <th>{strings.userU}</th>
+            <th>{strings.admin?}</th>
+            <th>{strings.numOfReqs}</th>
+            <th>{strings.edit}</th>
+            <th>{strings.delete}</th>
           </tr>
         </thead>
         <tbody>
@@ -196,7 +211,7 @@ export default function Dashboard() {
         </tbody>
       </table>
       <AddUserModal addToList={addToUserList} />
-      <p>{apiCountWarning}</p>
+      <p>{strings.warning}</p>
     </div>
   );
 }

@@ -1,0 +1,21 @@
+{
+    "aDash":"Admin Dashboard",
+    "method":"Method",
+    "endpoint":"Endpoint",
+    "calls":"Calls",
+    "userU":"User Username",
+    "admin?":"Admin?",
+    "numOfReqs":"Number of Requests",
+    "edit":"Edit",
+    "delete":"Delete",
+    "aiNo":"No Response from the AI",
+    "typeQ":"Type A Question",
+    "submit":"Submit",
+    "warning":"Warning! You have passed your API Call Limit",
+    "dashboard":"Dashboard",
+    "yourReqs":"Your Total Number of Requests",
+    "index":"Index",
+    "login":"Login",
+    "notFound":"404 Not Found",
+    "signup":"Sign Up"
+}

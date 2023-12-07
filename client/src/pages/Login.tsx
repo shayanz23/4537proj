@@ -13,6 +13,21 @@ function Login() {
   const cookies = new Cookies();
   const loginUrl = "http://localhost:3000/API/V1/auth/login";
   const navigate = useNavigate();
+  const [strings, setStrings] = useState<any | null>(null); // Using 'any' for flexibility
+
+  useEffect(() => {
+    const fetchStrings = async () => {
+      try {
+        const response = await fetch('/strings.json'); // Adjust the path if needed
+        const data = await response.json();
+        setStrings(data);
+      } catch (error) {
+        console.error('Error fetching strings:', error);
+      }
+    };
+
+    fetchStrings();
+  }, []);
 
   ///Used fetch template from Mozila Docs
   ///Used fetch template from Mozila Docs
@@ -88,7 +103,7 @@ function Login() {
     return (
       <div className="container form-container">
         <div className="login">
-          <h1>Log In</h1>
+          <h1>{strings.login}</h1>
           <form onSubmit={LoginInEventHandler}>
             <input
               type="text"
@@ -112,7 +127,7 @@ function Login() {
               type="submit"
               className="btn btn-primary btn-block btn-large"
             >
-              Log In
+              {strings.login}
             </button>
           </form>
           <p>{response}</p>

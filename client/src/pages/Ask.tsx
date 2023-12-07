@@ -15,7 +15,21 @@ type Message = {
 function Ask() {
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
+  const [strings, setStrings] = useState<any | null>(null); // Using 'any' for flexibility
 
+  useEffect(() => {
+    const fetchStrings = async () => {
+      try {
+        const response = await fetch('/strings.json'); // Adjust the path if needed
+        const data = await response.json();
+        setStrings(data);
+      } catch (error) {
+        console.error('Error fetching strings:', error);
+      }
+    };
+
+    fetchStrings();
+  }, []);
   const addMessage = (text: string, sender: "user" | "ai") => {
     const newMessage = { text, sender };
     setMessages([...messages, newMessage]);
@@ -103,7 +117,7 @@ function Ask() {
           onChange={(e) => setQuestion(e.target.value)}
         />
         <button type="submit" className="btn btn-primary btn-block btn-large">
-          Submit
+          {strings.submit}
         </button>
       </form>
     </div>

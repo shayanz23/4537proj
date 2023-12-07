@@ -14,6 +14,21 @@ function SignUp() {
   const [response, setResponse] = useState<string>("");
   const navigate = useNavigate();
   const cookies = new Cookies();
+  const [strings, setStrings] = useState<any | null>(null); // Using 'any' for flexibility
+
+  useEffect(() => {
+    const fetchStrings = async () => {
+      try {
+        const response = await fetch('/strings.json'); // Adjust the path if needed
+        const data = await response.json();
+        setStrings(data);
+      } catch (error) {
+        console.error('Error fetching strings:', error);
+      }
+    };
+
+    fetchStrings();
+  }, []);
   let success = false;
 
   function valid(username: string, password: string) {
@@ -105,7 +120,7 @@ function SignUp() {
     return (
       <div className="container form-container">
         <div className="sign-up">
-          <h1>Sign Up</h1>
+          <h1>{strings.signup}</h1>
           <form onSubmit={signUp}>
             <input
               type="text"
@@ -138,7 +153,7 @@ function SignUp() {
               type="submit"
               className="btn btn-primary btn-block btn-large"
             >
-              Sign Up
+              {strings.signup}
             </button>
             <p>{response}</p>
           </form>
