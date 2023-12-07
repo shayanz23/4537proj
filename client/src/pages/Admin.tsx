@@ -136,7 +136,7 @@ export default function Dashboard() {
 
   async function checkAuth() {
     if (currentUser.status === "") {
-      setTimeout(checkAuth, 250);
+      setTimeout(checkAuth, 500);
     } else if (currentUser.status === "Authorized" && !currentUser.isAdmin) {
       navigate("/dashboard");
     } else if (currentUser.status === "Unauthorized") {
