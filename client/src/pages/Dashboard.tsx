@@ -10,7 +10,7 @@ export default function Dashboard() {
   const [apiCountWarning, setApiCountWarning] = useState<string>("");
 
   function setCalls2() {
-    setCalls(currentUser.numOfReqs)
+    setCalls(currentUser.numOfReqs);
   }
   async function checkAuth() {
     if (currentUser.status === "") {
@@ -27,11 +27,10 @@ export default function Dashboard() {
   useEffect(() => {
     checkAuth();
     if (calls > 20) {
-      setApiCountWarning("You have passed your API call limit.")
-    }  
+      setApiCountWarning("Warning: You have passed your API call limit.");
+    }
   });
 
-  
   return (
     <div className="container">
       <h1>Dashboard</h1>

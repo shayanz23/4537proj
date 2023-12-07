@@ -55,8 +55,7 @@ export default function Dashboard() {
           userArray.push(user);
         }
         setUserList(userArray);
-      } catch (error) {
-      }
+      } catch (error) {}
     };
 
     fetchUsers();
@@ -86,8 +85,7 @@ export default function Dashboard() {
         const users = await getAllEndpoints();
 
         setEndpointList(users);
-      } catch (error) {
-      }
+      } catch (error) {}
     };
 
     fetchEndpoints();
@@ -133,7 +131,6 @@ export default function Dashboard() {
     setUserList(newArray);
   }
 
-
   async function checkAuth() {
     if (currentUser.status === "") {
       setTimeout(checkAuth, 500);
@@ -142,14 +139,13 @@ export default function Dashboard() {
     } else if (currentUser.status === "Unauthorized") {
       navigate("/login");
     } else {
-
     }
   }
 
   useEffect(() => {
     checkAuth();
     if (currentUser.numOfReqs > 20) {
-      setApiCountWarning("You have passed your API call limit.")
+      setApiCountWarning("Warning: You have passed your API call limit.");
     }
   });
 
