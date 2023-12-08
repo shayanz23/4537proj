@@ -114,6 +114,7 @@ userInfo.put('/upCallCount', authenticateToken, async (req, res) => {
         const userDocRef = admin.firestore().collection('users').doc(userUid);
 
         await userDocRef.update({ calls: admin.firestore.FieldValue.increment(1) });
+        res.send(200);
     } catch (error) {
         console.error('Error updating user calls count', error);
         res.status(500).send('Internal Server Error');
