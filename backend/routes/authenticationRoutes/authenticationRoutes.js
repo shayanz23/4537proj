@@ -1,3 +1,84 @@
+/**
+ * @swagger
+ * 
+ * /API/v1/auth/register:
+ *   post:
+ *     summary: Register a new user
+ *     tags: [Authentication]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *             required:
+ *               - username
+ *               - password
+ *     responses:
+ *       200:
+ *         description: User registered successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 accessToken:
+ *                   type: string
+ *                 calls:
+ *                   type: number
+ *       400:
+ *         description: Username already exists
+ *       500:
+ *         description: Internal Server Error
+ * 
+ * /API/v1/auth/login:
+ *   post:
+ *     summary: Login and generate access tokens
+ *     tags: [Authentication]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *             required:
+ *               - username
+ *               - password
+ *     responses:
+ *       200:
+ *         description: User logged in successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 accessToken:
+ *                   type: string
+ *                 adminAccessToken:
+ *                   type: string
+ *                 calls:
+ *                   type: number
+ *       401:
+ *         description: Invalid username or password
+ *       500:
+ *         description: Internal Server Error
+ */
+
+
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const router = express.Router();

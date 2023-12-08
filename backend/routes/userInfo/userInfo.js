@@ -1,3 +1,82 @@
+/**
+ * @swagger
+ * 
+ * /API/v1/userInfo/getCalls:
+ *   get:
+ *     summary: Get user call count
+ *     tags: [UserInfo]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User calls retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 calls:
+ *                   type: number
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal Server Error
+ * 
+ * /API/v1/userInfo/upCallCount:
+ *   put:
+ *     summary: Update user call count
+ *     tags: [UserInfo]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User call count updated successfully
+ *       500:
+ *         description: Internal Server Error
+ * 
+ * /API/v1/userInfo/getUserName:
+ *   get:
+ *     summary: Get user username
+ *     tags: [UserInfo]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User username retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 username:
+ *                   type: string
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal Server Error
+ * 
+ * /API/v1/userInfo/getAdminStatus:
+ *   get:
+ *     summary: Get user admin status
+ *     tags: [UserInfo]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User admin status retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 adminStatus:
+ *                   type: boolean
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal Server Error
+ */
+
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const userInfo = express.Router();

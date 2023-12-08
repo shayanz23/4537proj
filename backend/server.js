@@ -2,7 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
-const expressOasGenerator = require('express-oas-generator');
+const swaggerjsdoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
 
 const serviceAccount = require('./firebase/credentials.json');
 const adminRoutes = require('../backend/routes/adminRoutes/adminRoutes');
@@ -15,7 +16,6 @@ admin.initializeApp({
 });
 
 const app = express();
-expressOasGenerator.handleResponses(app, {});
 const port = 3000;
 
 app.use(cors());
@@ -32,7 +32,40 @@ app.use('/API/V1/admin', adminRoutes);
 app.use('/API/V1/auth', authRoutes);
 app.use('/API/V1/userInfo', userInfo);
 
-expressOasGenerator.handleRequests();
+const options = {
+    definition: {
+        openapi: "3.0.0",
+        info: {
+            title: "Unhinged AI api documentation.",
+            version: "1.0"
+        },
+        servers: [
+            {
+                url: "http://localhost:3000/"
+            }
+        ],
+        components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: 'http',
+                    scheme: 'bearer',
+                    bearerFormat: 'JWT',
+                }
+            }
+        },
+        security: [{
+            bearerAuth: []
+        }]
+    },
+    apis: ["./routes/*/*.js"]
+}
+
+const spacs = swaggerjsdoc(options);
+app.use(
+    "/API/swagger",
+    swaggerUi.serve,
+    swaggerUi.setup(spacs)
+);
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });

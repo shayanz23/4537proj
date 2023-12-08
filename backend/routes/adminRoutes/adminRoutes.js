@@ -1,11 +1,158 @@
+
+/**
+ * @swagger
+ * 
+ * /API/v1/admin/getAllUsers:
+ *   get:
+ *     summary: Get all users (admin only)
+ *     tags: [Admin]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of all users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *       500:
+ *         description: Internal Server Error
+ * 
+ * /API/v1/admin/deleteUser:
+ *   delete:
+ *     summary: Delete a user by username (admin only)
+ *     tags: [Admin]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *             required:
+ *               - username
+ *     responses:
+ *       200:
+ *         description: User deleted successfully
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal Server Error
+ * 
+ * /API/v1/admin/addUser:
+ *   post:
+ *     summary: Add a new user (admin only)
+ *     tags: [Admin]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               isAdmin:
+ *                 type: boolean
+ *             required:
+ *               - username
+ *               - password
+ *               - admin
+ *     responses:
+ *       200:
+ *         description: User added successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 userId:
+ *                   type: string
+ *       400:
+ *         description: User already exists
+ *       500:
+ *         description: Internal Server Error
+ * 
+ * /API/v1/admin/getAllEndpoints:
+ *   get:
+ *     summary: Get all endpoints (admin only)
+ *     tags: [Admin]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of all endpoints
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 endpoints:
+ *                   type: array
+ *                   items:
+ *       500:
+ *         description: Internal Server Error
+ * 
+ * /API/v1/admin/modifyUser/{userId}:
+ *   put:
+ *     summary: Modify a user by ID (admin only)
+ *     tags: [Admin]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The user ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               admin:
+ *                 type: boolean
+ *             required:
+ *               - username
+ *               - password
+ *               - admin
+ *     responses:
+ *       200:
+ *         description: User modified successfully
+ *       400:
+ *         description: Username already exists
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal Server Error
+ */
+
+
 const express = require('express');
 const adminRoutes = express.Router();
 const admin = require('firebase-admin');
 const jwt = require('jsonwebtoken');
-const { authenticateToken, authenticateTokenAdmin, passwordEncoder } = require('../../tokenHelpers/tokenHelper');
-const {updateRequestCount} = require("../helpers/helper")
+const { authenticateTokenAdmin, passwordEncoder } = require('../../tokenHelpers/tokenHelper');
+const { updateRequestCount } = require("../helpers/helper")
 
-adminRoutes.get('/getAllUsers',authenticateTokenAdmin ,async (req, res) => {
+adminRoutes.get('/getAllUsers', authenticateTokenAdmin, async (req, res) => {
   try {
     await updateRequestCount('getAllUsers');
 
@@ -57,7 +204,7 @@ adminRoutes.post('/addUser', authenticateTokenAdmin, async (req, res) => {
     const newUserRef = await admin.firestore().collection('users').add({
       username,
       password: encodedPassword,
-      admin: isAdmin || false, 
+      admin: isAdmin || false,
       calls: 0,
     });
 
@@ -68,7 +215,7 @@ adminRoutes.post('/addUser', authenticateTokenAdmin, async (req, res) => {
   }
 });
 
-adminRoutes.get('/getAllEndpoints', authenticateTokenAdmin, async(req,res)=>{
+adminRoutes.get('/getAllEndpoints', authenticateTokenAdmin, async (req, res) => {
   try {
     await updateRequestCount('getAllEndpoints');
     const endpointsCollection = await admin.firestore().collection('endpoints').get();
